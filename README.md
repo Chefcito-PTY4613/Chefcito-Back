@@ -2,6 +2,20 @@
 
 Proyecto Back-end de la plataforma de "restorant management" con el Stack Node, Express, Mongoose, JWTy TS
 
+### ¿Como instalar?
+``` bash
+~>git clone https://github.com/Chefcito-PTY4613/Chefcito-Back.git
+~>cd Chefcito-Back
+~/Chefcito-Back>npm install
+```
+### ¿Como ejecutar?
+Dentro de la carpeta raíz, existe un archivo llamado "env.txt" \
+Tienes que cambiar los valores de ejemplo por los reales \
+Cambias el nombre del archivo de **~>env.txt** a **~>.env** \
+Luego puedes ejecutar
+``` bash 
+~/Chefcito-Back> npm run dev
+```
 ### Dependencias
 ```json
 {
