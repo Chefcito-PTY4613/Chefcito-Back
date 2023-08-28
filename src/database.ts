@@ -1,7 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, { ConnectOptions } from "mongoose";
 import config from "./config/config"
 
-mongoose.connect(config.DB.URI)
+
+
+mongoose.connect(config.DB.URI, {
+    autoIndex: true
+})
 
 const connection = mongoose.connection;
 connection.once('open',()=>{

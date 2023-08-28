@@ -1,9 +1,21 @@
+
+POST http://localhost:3000/login  HTTP/1.1
+content-type: application/json
+
+{
+    "mail":"ja.sabando4@duocuc.cl",
+    "password":"4523452345"
+}
 ###
 
-POST http://localhost:3000/login
+POST http://localhost:3000/signup  HTTP/1.1
+content-type: application/json
 
-###
-
-POST http://localhost:3000/signup
+{
+    "mail":"ja.sabando4@duocuc.cl",
+    "password":"4523452345",
+    "name":"javier",
+    "lastName":"sabando"
+}
 
 ###

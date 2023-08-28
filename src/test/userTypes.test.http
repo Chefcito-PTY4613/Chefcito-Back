@@ -1,0 +1,20 @@
+POST http://localhost:3000/usertype  HTTP/1.1
+content-type: application/json
+
+{
+    "name":"customer",
+    "desc":"Este rol pertenece a los clientes de aplicaciones móviles."
+}
+
+###
+PUT http://localhost:3000/usertype  HTTP/1.1
+content-type: application/json
+
+{
+    "name":"customer",
+    "desc":"Este rol pertenece a los clientes de aplicaciones móviles."
+}
+
+###
+GET http://localhost:3000/usertype
+###

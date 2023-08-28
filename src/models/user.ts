@@ -2,18 +2,25 @@ import { model, Schema, Document, Types } from "mongoose";
 import bcrypt from 'bcrypt';
 
 export interface IUser extends Document{
-    name:string,
-    lastName:string,
-    mail:string,
-    password:string,
+    name:string;
+    lastName:string;
+    mail:string;
+    password:string;
     phone?:{
         code:string,
         number:number
-    }
-    userType:Types.ObjectId
+    };
+    userType:Types.ObjectId;
+    comparePassword:(password:string)=> Promise<boolean>;
 }
 
-const userSchema = new Schema({
+export interface ILogin extends Document{
+    mail:string;
+    password:string;
+    comparePassword:(password:string)=> Promise<boolean>;
+}
+
+const userSchema:Schema = new Schema({
     name: {
         type:String,
         required:true
@@ -21,6 +28,11 @@ const userSchema = new Schema({
     lastName: {
         type:String,
         required:true
+    },
+    active:{
+        type: Boolean,
+        default: true
+
     },
     mail: {
         type:String,
@@ -32,6 +44,10 @@ const userSchema = new Schema({
     password: {
         type:String,
         required:true
+    },
+    verified: {
+        type:Boolean,
+        default: false
     },
     phone:{
         code:String,
@@ -62,7 +78,7 @@ userSchema.pre<IUser>('save', async function (next){
 });
 
 //comprobar de contraseña
-userSchema.methods.comparePassword =  async function (password:string): Promise<boolean>{
+userSchema.methods.comparePassword = async function (password:string): Promise<boolean>{
     return await bcrypt.compare(password, this.password)
 }
 

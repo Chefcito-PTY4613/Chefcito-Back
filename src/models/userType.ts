@@ -1,11 +1,12 @@
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 export interface IUserType extends Document{
+    _id: Types.ObjectId,
     name:string,
     desc:string,
 }
 
-const userTypeSchema = new Schema({
+const userTypeSchema:Schema = new Schema({
     name:{
         type: String,
         required:true,
