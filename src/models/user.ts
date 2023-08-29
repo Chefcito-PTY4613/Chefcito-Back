@@ -2,22 +2,19 @@ import { model, Schema, Document, Types } from "mongoose";
 import bcrypt from 'bcrypt';
 
 export interface IUser extends Document{
+    _id?: Types.ObjectId,
     name:string;
     lastName:string;
     mail:string;
     password:string;
+    verified?:Boolean;
+    active?:Boolean;
     phone?:{
         code:string,
         number:number
     };
     userType:Types.ObjectId;
-    comparePassword:(password:string)=> Promise<boolean>;
-}
-
-export interface ILogin extends Document{
-    mail:string;
-    password:string;
-    comparePassword:(password:string)=> Promise<boolean>;
+    comparePassword: (password:string) => Promise<boolean>;
 }
 
 const userSchema:Schema = new Schema({
@@ -82,4 +79,4 @@ userSchema.methods.comparePassword = async function (password:string): Promise<b
     return await bcrypt.compare(password, this.password)
 }
 
-export default model<IUser>('User',userSchema)
+export const User = model<IUser>('User',userSchema)

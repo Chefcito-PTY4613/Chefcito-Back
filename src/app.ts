@@ -8,6 +8,7 @@ import passMiddleware from "./middlewares/passport";
 import authRouter from './routes/auth.routes'
 import userTypeRouter from "./routes/userTypes.routes";
 import reservationRouter from "./routes/reservation.router";
+import userRouter from "./routes/user.routes";
 
 //init
 const app = express()
@@ -30,7 +31,7 @@ app.get('/',(req,res)=>{
 app.use(authRouter);
 app.use(userTypeRouter);
 app.use(reservationRouter);
-
+app.use(userRouter);
 
 
 export default app;

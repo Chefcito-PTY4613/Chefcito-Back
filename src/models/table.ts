@@ -1,9 +1,10 @@
 import { model, Schema, Document, Types } from "mongoose";
 
-export interface ITable extends Document{
-    _id: Types.ObjectId,
+export interface ITable{
+    _id?: Types.ObjectId,
     num: number;
     size: number;
+    active?: boolean;
 }
 
 const tableSchema:Schema = new Schema({
@@ -22,8 +23,8 @@ const tableSchema:Schema = new Schema({
 
     },
 },{
-    timestamps:false,
+    timestamps:true,
     versionKey:false
 });
 
-export default model<ITable>('Table',tableSchema)
+export const Table = model<ITable>('Table',tableSchema)

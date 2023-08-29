@@ -1,7 +1,7 @@
 import { Schema, Types, model } from "mongoose";
 
-export interface IUserType extends Document{
-    _id: Types.ObjectId,
+export interface IUserType{
+    _id?: Types.ObjectId,
     name:string,
     desc:string,
 }
@@ -20,4 +20,4 @@ const userTypeSchema:Schema = new Schema({
     timestamps:true,
     versionKey:false
 })
-export default model<IUserType>('UserType',userTypeSchema)
+export const UserType = model<IUserType>('UserType',userTypeSchema)

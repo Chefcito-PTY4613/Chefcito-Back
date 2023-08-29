@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import UserType, { IUserType } from "../models/userType";
+import { UserType, IUserType } from "../models/userType";
 
 export const createUserType = async (req: Request, res: Response) => {
   const { name, desc } = req.body;
@@ -17,4 +17,6 @@ export const createUserType = async (req: Request, res: Response) => {
 
 export const updateUserType = (req: Request, res: Response) => {};
 
-export const getUserType = (req: Request, res: Response) => {};
+export const getUserType =  async(req: Request, res: Response) => {
+
+};

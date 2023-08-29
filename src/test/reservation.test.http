@@ -2,8 +2,6 @@
 POST http://localhost:3000/reservation  HTTP/1.1
 Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTkzYWFjZTc1ODdkZGIyZGFkNDI4ZCIsIm1haWwiOiJqYS5zYWJhbmRvNEBkdW9jdWMuY2wiLCJpYXQiOjE2OTMyNTkzNzksImV4cCI6MTY5MzM0NTc3OX0._8JJEBBx9G810M0wgNCMYfuQjoaE_Oke7DZG3Bn1zHI
 content-type: application/json
-
 {
-    "mail":"ja.sabando4@duocuc.cl",
-    "password":"4523452345"
+    
 }

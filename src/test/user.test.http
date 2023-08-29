@@ -3,7 +3,7 @@ POST http://localhost:3000/login  HTTP/1.1
 content-type: application/json
 
 {
-    "mail":"ja.sabando4@duocuc.cl",
+    "mail":"ja.sabando@duocuc.cl",
     "password":"4523452345"
 }
 ###
@@ -12,10 +12,23 @@ POST http://localhost:3000/signup  HTTP/1.1
 content-type: application/json
 
 {
-    "mail":"ja.sabando4@duocuc.cl",
+    "mail":"ja.sabando13@duocuc.cl",
     "password":"4523452345",
     "name":"javier",
     "lastName":"sabando"
 }
 
 ###
+GET  http://localhost:3000/user  HTTP/1.1
+content-type: application/json
+
+{
+    "mail":"ja.sabando@duocuc.cl",
+    "password":"4523452345",
+    "name":"javier",
+    "lastName":"sabando"
+}
+
+###
+GET http://localhost:3000/user?page=1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWU1N2EyMTJkODE0M2Q1ZGJmYWMyNSIsIm1haWwiOiJqYS5zYWJhbmRvQGR1b2N1Yy5jbCIsImlhdCI6MTY5MzM0NTUwNCwiZXhwIjoxNjk1OTM3NTA0fQ.gXEw0AOVwPH-TZkFUNAuiDtIg1USrCVnXxOo8N-QenM

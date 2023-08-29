@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Table, { ITable } from "../models/table";
+import { Table, ITable } from "../models/table";
 
 export const getTable = async (req: Request, res: Response) => {
     
