@@ -12,7 +12,7 @@ POST http://localhost:3000/signup  HTTP/1.1
 content-type: application/json
 
 {
-    "mail":"ja.sabando13@duocuc.cl",
+    "mail":"ja.sabando@duocuc.cl",
     "password":"4523452345",
     "name":"javier",
     "lastName":"sabando"
@@ -30,5 +30,6 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:3000/user?page=1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWU1N2EyMTJkODE0M2Q1ZGJmYWMyNSIsIm1haWwiOiJqYS5zYWJhbmRvQGR1b2N1Yy5jbCIsImlhdCI6MTY5MzM0NTUwNCwiZXhwIjoxNjk1OTM3NTA0fQ.gXEw0AOVwPH-TZkFUNAuiDtIg1USrCVnXxOo8N-QenM
+GET http://localhost:3000/user?id=64ee65824cd8b4ff6329ba16 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWU0ZGQzMDg5YzM0ZTlhNzFkNmRmMCIsIm1haWwiOiJqYXZpZXIyMDAwYXNyQGdtYWlsLmNvbSIsInVzZXJUeXBlIjoiNjRlZTRkY2YwODljMzRlOWE3MWQ2ZGQ5IiwiaWF0IjoxNjkzMzQ4ODg2LCJleHAiOjE2OTU5NDA4ODZ9.vlXbIFHbhTR6B9LzEyfBA9U6eY4Kwl7hF1Omx3jK5tg
+

@@ -1,7 +1,11 @@
 import { Request, Response, response } from "express";
 import { User, IUser } from "../models/user";
-import { UserType, IUserType } from "../models/userType";
-import { createToken, verifiedToken, stringExtractor } from "../libs/fn.ratapan";
+import { UserType } from "../models/types/userType";
+import {
+  createToken,
+  verifiedToken,
+  stringExtractor,
+} from "../libs/fn.ratapan";
 
 export const signup = async (req: Request, res: Response) => {
   const { mail, password, name, lastName } = req.body;
@@ -21,7 +25,7 @@ export const signup = async (req: Request, res: Response) => {
     password,
     name,
     lastName,
-    userType: typeUser?._id,
+    userType: typeUser?.id,
   });
   newCustomer.save();
 
@@ -42,7 +46,10 @@ export const login = async (req: Request, res: Response) => {
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return res.status(401).json({ msg: "Conteseña invalida" });
   }
-  const token = createToken({ id: user.id, mail: user.mail }, 30);
+  const token = createToken(
+    { id: user.id, mail: user.mail, userType: user.userType },
+    30
+  );
 
   return res.status(200).json({ token });
 };
@@ -61,17 +68,20 @@ export const getCustomers = async (req: Request, res: Response) => {
   }
 
   //customer Page
+
   const page = req.query.page as string;
 
   // El usuario tiene autorización en headers?
   if (!req.headers?.authorization)
-    return res
-      .status(400)
-      .json({
-        msg: "Se necesita autorización, para objetener datos paginados",
-      });
-  // El usuario tiene autorización?
-  if (!verifiedToken(stringExtractor(req.headers.authorization, 'Bearer ')).token)
+    return res.status(400).json({
+      msg: "Se necesita autorización, para objetener datos paginados",
+    });
+  // El usuario tiene autorización?, tiene que ser un token valido y ademas ser admin
+  const decodedToken = verifiedToken(
+    stringExtractor(req.headers.authorization, "Bearer ")
+  );
+  const typeUser = await UserType.findById(decodedToken.res?.userType);
+  if (!decodedToken.token || typeUser?.name !== "admin")
     return res
       .status(400)
       .json({ msg: "No autorizado o autorización caducada" });
@@ -79,23 +89,24 @@ export const getCustomers = async (req: Request, res: Response) => {
   //page es un numero?
 
   const pageInt = parseInt(page, 10);
-  if (isNaN(pageInt) || pageInt < 0) {
+  if (isNaN(pageInt) || pageInt < 1) {
     res.status(400).json({ msg: "Page no es un numero valido" });
     return;
   }
 
   const typesUser = await UserType.findOne({ name: "customer" });
-  if (!typesUser) {
+  if (!typesUser)
     return res
       .status(400)
-      .json({ msg: "El tipo de usuario clinete no existe" });
-  }
+      .json({ msg: "El tipo de usuario cliente no existe" });
+
   const limit: number = 10;
 
   const customers = await User.find({ userType: typesUser.id })
     .limit(limit)
     .skip((pageInt - 1) * limit)
     .sort({ createdAt: -1 });
+
   const customersCount = await User.countDocuments({ userType: typesUser.id });
 
   return res.status(200).json({

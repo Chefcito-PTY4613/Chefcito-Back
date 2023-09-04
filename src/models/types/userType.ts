@@ -1,9 +1,14 @@
 import { Schema, Types, model } from "mongoose";
 
 export interface IUserType{
-    _id?: Types.ObjectId,
+    id?: Types.ObjectId,
     name:string,
     desc:string,
+}
+export interface IUpdateUserType{
+    id: Types.ObjectId,
+    name?:string,
+    desc?:string,
 }
 
 const userTypeSchema:Schema = new Schema({

@@ -1,26 +1,30 @@
-GET http://localhost:3000/usertype  HTTP/1.1
+
+GET  http://localhost:3000/foodtype  HTTP/1.1
+content-type: application/json
 
 ###
 
-POST http://localhost:3000/usertype  HTTP/1.1
+POST http://localhost:3000/foodtype  HTTP/1.1
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWZkNjZkM2M4OGQxOTdlODk2ODAyZSIsIm1haWwiOiJqYXZpZXIyMDAwYXNyQGdtYWlsLmNvbSIsInVzZXJUeXBlIjoiNjRlZmQ2NjgzYzg4ZDE5N2U4OTY4MDE1IiwiaWF0IjoxNjkzNzc3MDU4LCJleHAiOjE2OTYzNjkwNTh9.JUoaKBNlhiEulQ57Y5sOy_piwcdabxGKeHwSaT_4MOk
 
 {
-    "name":"customer",
-    "desc":"Este rol pertenece a los clientes de aplicaciones móviles."
+      "name": "Agregados",
+      "color": "#ccc33a",
+      "sheduleStart": 6,
+      "sheduleEnd": 13
 }
 
 ###
-PUT http://localhost:3000/usertype  HTTP/1.1
+PUT  http://localhost:3000/foodtype  HTTP/1.1
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWZkNjZkM2M4OGQxOTdlODk2ODAyZSIsIm1haWwiOiJqYXZpZXIyMDAwYXNyQGdtYWlsLmNvbSIsInVzZXJUeXBlIjoiNjRlZmQ2NjgzYzg4ZDE5N2U4OTY4MDE1IiwiaWF0IjoxNjkzNzc3MDU4LCJleHAiOjE2OTYzNjkwNTh9.JUoaKBNlhiEulQ57Y5sOy_piwcdabxGKeHwSaT_4MOk
 
 {
-    "id":"64efd6683c88d197e8968015",
-    "desc":"Editado."
+    
+    "id":"64f64afb48be16431320130e",
+      "name": "Agregados",
+      "color": "#ffc03d",
+      "sheduleStart": 6,
+      "sheduleEnd": 23
 }
-
-###
-GET http://localhost:3000/usertype
-###

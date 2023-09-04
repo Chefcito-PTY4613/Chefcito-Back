@@ -1,0 +1,22 @@
+GET http://localhost:3000/table  HTTP/1.1
+
+###
+POST http://localhost:3000/table  HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWU0ZGQzMDg5YzM0ZTlhNzFkNmRmMCIsIm1haWwiOiJqYXZpZXIyMDAwYXNyQGdtYWlsLmNvbSIsInVzZXJUeXBlIjoiNjRlZTRkY2YwODljMzRlOWE3MWQ2ZGQ5IiwiaWF0IjoxNjkzMzQ4ODg2LCJleHAiOjE2OTU5NDA4ODZ9.vlXbIFHbhTR6B9LzEyfBA9U6eY4Kwl7hF1Omx3jK5tg
+content-type: application/json
+
+{
+    "num":10,
+    "size":8
+}
+
+###
+PUT http://localhost:3000/table  HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWU0ZGQzMDg5YzM0ZTlhNzFkNmRmMCIsIm1haWwiOiJqYXZpZXIyMDAwYXNyQGdtYWlsLmNvbSIsInVzZXJUeXBlIjoiNjRlZTRkY2YwODljMzRlOWE3MWQ2ZGQ5IiwiaWF0IjoxNjkzMzQ4ODg2LCJleHAiOjE2OTU5NDA4ODZ9.vlXbIFHbhTR6B9LzEyfBA9U6eY4Kwl7hF1Omx3jK5tg
+content-type: application/json
+
+{
+    "id": "64ee7fd0f945ebd33f331b50",
+    "active": false,
+    "size":8
+}

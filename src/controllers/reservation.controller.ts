@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
-import { UserType,IUserType } from "../models/userType";
 
 export const getReservation = async (req: Request, res: Response) => {
+    
+}
+export const getReservationManagement = async (req: Request, res: Response) => {
     
 }
 

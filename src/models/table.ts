@@ -1,7 +1,7 @@
 import { model, Schema, Document, Types } from "mongoose";
 
 export interface ITable{
-    _id?: Types.ObjectId,
+    id?: Types.ObjectId,
     num: number;
     size: number;
     active?: boolean;

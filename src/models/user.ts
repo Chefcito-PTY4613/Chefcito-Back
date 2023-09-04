@@ -2,7 +2,7 @@ import { model, Schema, Document, Types } from "mongoose";
 import bcrypt from 'bcrypt';
 
 export interface IUser extends Document{
-    _id?: Types.ObjectId,
+    id?: Types.ObjectId,
     name:string;
     lastName:string;
     mail:string;
@@ -16,7 +16,25 @@ export interface IUser extends Document{
     userType:Types.ObjectId;
     comparePassword: (password:string) => Promise<boolean>;
 }
-
+export interface IUserAndType extends Document{
+    id?: Types.ObjectId,
+    name:string;
+    lastName:string;
+    mail:string;
+    password:string;
+    verified?:Boolean;
+    active?:Boolean;
+    phone?:{
+        code:string,
+        number:number
+    };
+    userType: {
+        id: Types.ObjectId,
+        name:string,
+        desc:string,
+    };
+    comparePassword: (password:string) => Promise<boolean>;
+}
 const userSchema:Schema = new Schema({
     name: {
         type:String,

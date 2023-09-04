@@ -5,6 +5,9 @@ import setup from "./libs/setup";
 setup.setUserTypes()
 setup.setAdmin()
 setup.setTables()
+setup.setSaleStatus()
+setup.setFoodType()
+setup.setMovementType()
 
 app.listen(app.get('port'));
 console.log('Server on port:', app.get('port'));

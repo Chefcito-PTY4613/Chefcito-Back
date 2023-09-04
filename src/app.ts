@@ -6,8 +6,9 @@ import passport from "passport";
 import passMiddleware from "./middlewares/passport";
 
 import authRouter from './routes/auth.routes'
-import userTypeRouter from "./routes/userTypes.routes";
+import typeRouter from "./routes/types.routes";
 import reservationRouter from "./routes/reservation.router";
+import tableRouter from "./routes/table.router";
 import userRouter from "./routes/user.routes";
 
 //init
@@ -29,9 +30,10 @@ app.get('/',(req,res)=>{
     res.send(`La API estan en https://localhost:${app.get('port')}/`)
 })
 app.use(authRouter);
-app.use(userTypeRouter);
+app.use(typeRouter);
 app.use(reservationRouter);
 app.use(userRouter);
+app.use(tableRouter);
 
 
 export default app;
