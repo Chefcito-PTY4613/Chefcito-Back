@@ -6,6 +6,7 @@ import { isAdmin } from "../middlewares/isUserType";
 import { getMovementType, postMovementType, putMovementType } from "../controllers/types/movement.controller";
 import { getSaleStatus, postSaleStatus, putSaleStatus } from "../controllers/types/saleStatus.controller";
 import { getFoodType, postFoodType, putFoodType } from "../controllers/types/foodType.controller";
+import { getProccess, postProccess, putProccess } from "../controllers/types/process.controller";
 
 const typesRouter = Router()
 
@@ -28,6 +29,11 @@ typesRouter.put('/salestatus' ,[passport.authenticate('jwt',{session:false}),isA
 typesRouter.get('/usertype' ,getUserType)
 typesRouter.post('/usertype',[passport.authenticate('jwt',{session:false}),isAdmin],postUserType)
 typesRouter.put('/usertype' ,[passport.authenticate('jwt',{session:false}),isAdmin],putUserType)
+
+//Procesos de cocina
+typesRouter.get('/proccess' ,getProccess)
+typesRouter.post('/proccess',[passport.authenticate('jwt',{session:false}),isAdmin],postProccess)
+typesRouter.put('/proccess' ,[passport.authenticate('jwt',{session:false}),isAdmin],putProccess)
 
 
 export default typesRouter;

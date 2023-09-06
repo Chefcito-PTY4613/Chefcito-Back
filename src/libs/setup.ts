@@ -5,6 +5,7 @@ import config from "../config/config";
 import {  SaleStatus, ISaleStatus } from "../models/types/saleStatus";
 import { FoodType, IFoodType } from "../models/types/foodType";
 import { MovementType, IMovementType } from "../models/types/movementType";
+import { IProcessType, ProcessType } from "../models/types/process";
 
 const setUserTypes = async () => {
   try {
@@ -176,6 +177,29 @@ const setMovementType = async () => {
   MovementType.insertMany(movementTypes);
 };
 
+const setProcess = async () => {
+  const data = await ProcessType.find().limit(3);
+
+  if (data.length  !== 0) return;
+
+
+  const process: Array<IProcessType> = [
+    {
+      name: "Freidora",
+    },
+    {
+      name: "Plancha",
+    },
+    {
+      name: "Horno",
+    },
+    {
+      name: "Quemadores",
+    },
+  ];
+  ProcessType.insertMany(process);
+};
+
 export default {
   setUserTypes,
   setAdmin,
@@ -183,4 +207,5 @@ export default {
   setSaleStatus,
   setFoodType,
   setMovementType,
+  setProcess
 };

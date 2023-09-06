@@ -12,6 +12,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWZkNjZkM
 }
 
 ###
+
 PUT http://localhost:3000/usertype  HTTP/1.1
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWZkNjZkM2M4OGQxOTdlODk2ODAyZSIsIm1haWwiOiJqYXZpZXIyMDAwYXNyQGdtYWlsLmNvbSIsInVzZXJUeXBlIjoiNjRlZmQ2NjgzYzg4ZDE5N2U4OTY4MDE1IiwiaWF0IjoxNjkzNzc3MDU4LCJleHAiOjE2OTYzNjkwNTh9.JUoaKBNlhiEulQ57Y5sOy_piwcdabxGKeHwSaT_4MOk
@@ -20,7 +21,3 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWZkNjZkM
     "id":"64efd6683c88d197e8968015",
     "desc":"Editado."
 }
-
-###
-GET http://localhost:3000/usertype
-###

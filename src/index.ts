@@ -8,6 +8,6 @@ setup.setTables()
 setup.setSaleStatus()
 setup.setFoodType()
 setup.setMovementType()
+setup.setProcess()
 
-app.listen(app.get('port'));
-console.log('Server on port:', app.get('port'));
+app.listen(app.get('port'))
