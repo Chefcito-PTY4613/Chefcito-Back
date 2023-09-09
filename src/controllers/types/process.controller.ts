@@ -5,8 +5,8 @@ import { ProcessType, IUpdateProcessType } from "../../models/types/process";
 
 export const getProccess =  async(req: Request, res: Response) => {
   try {
-    const processTypes = await ProcessType.find()
-    res.json({processTypes})
+    const data = await ProcessType.find()
+    res.json(data)
   } catch (error) {
     res.status(400).json({msg:'Ha ocurrido un erro'})
   }
@@ -22,9 +22,9 @@ export const postProccess = async (req: Request, res: Response) => {
   const processType = await ProcessType.findOne({ name });
   if (processType) return res.status(400).json({ msg: "El tipo ya existe" });
 
-  const newProcessType = new ProcessType({ name });
-  await newProcessType.save();
-  return res.status(201).json(newProcessType);
+  const data = new ProcessType({ name });
+  await data.save();
+  return res.status(201).json(data);
 };
 
 interface IProccessToUpdate{
@@ -44,8 +44,8 @@ export const putProccess = async (req: Request, res: Response) => {
   if(name)toUpdate.name = name
 
   try {
-      const updatedProcess  = await ProcessType.findByIdAndUpdate(id,{...toUpdate},{new: true})
-      return res.status(200).json(updatedProcess)
+      const data  = await ProcessType.findByIdAndUpdate(id,{...toUpdate},{new: true})
+      return res.status(200).json(data)
   } catch (_) {
       return res.status(400).json({msg:'Registro repetido'})
   }

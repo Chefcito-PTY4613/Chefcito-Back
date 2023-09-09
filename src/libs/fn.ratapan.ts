@@ -35,3 +35,7 @@ export const optionalToUpdate = (ops: Record<string, unknown>): Record<string, u
 
   return toUpdate;
 };
+
+export const objectsToSrings = (arr:Array<object>)=>{
+
+}

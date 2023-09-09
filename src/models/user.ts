@@ -16,6 +16,21 @@ export interface IUser extends Document{
     userType:Types.ObjectId;
     comparePassword: (password:string) => Promise<boolean>;
 }
+export interface IUserWorker extends Document{
+    id?: Types.ObjectId,
+    name?:string;
+    lastName?:string;
+    mail?:string;
+    password?:string;
+    verified?:Boolean;
+    active?:Boolean;
+    phone?:{
+        code:string,
+        number:number
+    };
+    userType?:Types.ObjectId;
+    comparePassword: (password:string) => Promise<boolean>;
+}
 export interface IUserAndType extends Document{
     id?: Types.ObjectId,
     name:string;
@@ -33,7 +48,7 @@ export interface IUserAndType extends Document{
         name:string,
         desc:string,
     };
-    comparePassword: (password:string) => Promise<boolean>;
+    comparePassword?: (password:string) => Promise<boolean>;
 }
 const userSchema:Schema = new Schema({
     name: {

@@ -8,8 +8,8 @@ import { optionalToUpdate } from "../../libs/fn.ratapan";
 
 export const getFoodType = async (req: Request, res: Response) => {
   try {
-    const foodType = await FoodType.find();
-    res.json({ foodType });
+    const data = await FoodType.find();
+    res.json(data);
   } catch (error) {
     res.status(400).json({ msg: "Ha ocurrido un erro" });
   }
@@ -38,9 +38,9 @@ export const postFoodType = async (req: Request, res: Response) => {
   if (userType) return res.status(400).json({ msg: "El tipo ya existe" });
 
   try {
-    const newFoodType = new FoodType(options);
-    await newFoodType.save();
-    return res.status(201).json(newFoodType);
+    const data = new FoodType(options);
+    await data.save();
+    return res.status(201).json(data);
   } catch (_) {
     return res.status(400).json({ msg: "Error de registro" });
   }
@@ -67,10 +67,10 @@ export const putFoodType = async (req: Request, res: Response) => {
       .json({ msg: "Datos erroneos (name, color, sheduleStart, sheduleEnd)" });
 
   try {
-    const newFoodType = await FoodType.findByIdAndUpdate(id, options, {
+    const data = await FoodType.findByIdAndUpdate(id, options, {
       new: true,
     });
-    return res.status(200).json(newFoodType);
+    return res.status(200).json(data);
   } catch (_) {
     return res.status(400).json({ msg: "Error de registro" });
   }

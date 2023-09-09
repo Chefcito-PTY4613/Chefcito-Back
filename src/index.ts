@@ -9,5 +9,6 @@ setup.setSaleStatus()
 setup.setFoodType()
 setup.setMovementType()
 setup.setProcess()
+setup.setMeasurement()
 
 app.listen(app.get('port'))

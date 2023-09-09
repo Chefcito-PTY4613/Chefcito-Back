@@ -6,6 +6,7 @@ import {  SaleStatus, ISaleStatus } from "../models/types/saleStatus";
 import { FoodType, IFoodType } from "../models/types/foodType";
 import { MovementType, IMovementType } from "../models/types/movementType";
 import { IProcessType, ProcessType } from "../models/types/process";
+import { IUnitOfMeasurement, UnitOfMeasurement } from "../models/types/unitOfMeasurement";
 
 const setUserTypes = async () => {
   try {
@@ -200,6 +201,29 @@ const setProcess = async () => {
   ProcessType.insertMany(process);
 };
 
+const setMeasurement = async () => {
+  const data = await UnitOfMeasurement.find().limit(3);
+
+  if (data.length  !== 0) return;
+
+
+  const unitOfMeasurement: Array<IUnitOfMeasurement> = [
+    {
+      name: "ml",
+    },
+    {
+      name: "mg",
+    },
+    {
+      name: "mm",
+    },
+    {
+      name: "cc",
+    },
+  ];
+  UnitOfMeasurement.insertMany(unitOfMeasurement);
+};
+
 export default {
   setUserTypes,
   setAdmin,
@@ -207,5 +231,6 @@ export default {
   setSaleStatus,
   setFoodType,
   setMovementType,
-  setProcess
+  setProcess,
+  setMeasurement
 };

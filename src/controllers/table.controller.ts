@@ -3,14 +3,12 @@ import { Table, ITable } from "../models/table";
 import { IUserAndType } from "../models/user";
 
 export const getTable = async (req: Request, res: Response) => {
-    const allTables = await Table.find()
-    if(allTables) return res.status(200).json({tables:allTables})
+    const data = await Table.find()
+    if(data) return res.status(200).json(data)
     return res.status(400).json({msg:'ha ocurrido un error'})
 }
 
 export const createTable = async (req: Request, res: Response) => {
-    const user = req.user as IUserAndType 
-    if(!user.userType.name)return res.status(400).json({msg:'Usuario no autorizado'})
     const {num,size} = req.body;
 
     if(!num || !size) return res.status(400).json({msg:'Datos erroneos (num,size)'})

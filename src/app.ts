@@ -50,10 +50,10 @@ passport.use(passMiddleware);
 
 //routes
 app.use(authRouter);
-app.use(typeRouter);
-app.use(reservationRouter);
 app.use(userRouter);
 app.use(tableRouter);
+app.use(reservationRouter);
+app.use('/type',typeRouter);
 
 //Docs
 app.use("/", swaggerUI.serve, swaggerUI.setup(swaggerDocs));

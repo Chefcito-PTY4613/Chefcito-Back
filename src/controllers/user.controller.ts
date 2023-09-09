@@ -1,10 +1,11 @@
 import { Request, Response, response } from "express";
-import { User, IUser } from "../models/user";
-import { UserType } from "../models/types/userType";
+import { User, IUser, IUserWorker } from "../models/user";
+import { IUpdateUserType, IUserType, UserType } from "../models/types/userType";
 import {
   createToken,
   verifiedToken,
   stringExtractor,
+  optionalToUpdate,
 } from "../libs/fn.ratapan";
 
 export const signup = async (req: Request, res: Response) => {
@@ -116,3 +117,37 @@ export const getCustomers = async (req: Request, res: Response) => {
     total: customersCount,
   });
 };
+
+
+export const postWorker = async (req: Request, res: Response)=>{
+  const { mail, password, name, lastName, phone, userType } = req.body as IUserWorker;
+
+  
+  // están los datos?
+  if (!mail || !password || !name || !lastName || !userType)
+  return res.status(400).json({ msg: "Datos incompletos" });
+  // el usuario ya existe?
+  const user = await User.findOne({ mail });
+  if (user) return res.status(400).json({ msg: "El usuario ya existe" });
+
+  const userWorkers = ["waiter" , "finance" , "chef" , "store"];
+  const userTypes = await UserType.findById(userType) as IUserType
+
+  if(!userWorkers.includes(userTypes?.name))return res.status(400).json({ msg: "No se puede crear este tipo de usuario" });
+  
+
+  const toCreate = {
+    mail:mail, 
+    password:password, 
+    name:name, 
+    lastName:lastName, 
+    phone:phone, 
+    userType:userType
+  };
+  const options = optionalToUpdate(toCreate);
+  const newCustomer = new User(options);
+  newCustomer.save();
+
+  return res.status(201).json(newCustomer);
+
+}

@@ -13,6 +13,18 @@ export const isAdmin = async (req:Request, res:Response, next:NextFunction) => {
     return res.status(500).send({ message: error });
   }
 };
+export const isAdminOrStore= async (req:Request, res:Response, next:NextFunction) =>{
+  try {
+    const user  = req.user as IUserAndType
+    if (user.userType.name === "admin" || user.userType.name === "store") {
+      next();
+      return;
+    }
+    return res.status(403).json({ message: "Require admin or store Role!" });
+  } catch (error) {
+    return res.status(500).send({ message: error });
+  }
+}
 
 export const isCustomer = async (req:Request, res:Response, next:NextFunction) => {
   try {

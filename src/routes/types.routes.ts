@@ -7,28 +7,70 @@ import { getMovementType, postMovementType, putMovementType } from "../controlle
 import { getSaleStatus, postSaleStatus, putSaleStatus } from "../controllers/types/saleStatus.controller";
 import { getFoodType, postFoodType, putFoodType } from "../controllers/types/foodType.controller";
 import { getProccess, postProccess, putProccess } from "../controllers/types/process.controller";
+import { getMeasurement, postMeasurement, putMeasurement } from "../controllers/types/unitOfMeasurement.controller";
 
 const typesRouter = Router()
 
+/**
+* @swagger
+*
+* /type/food: 
+*   get:
+*     sumary: get food types.
+* 
+* 
+* /type/movement:
+*   get:
+*     summary: get movement types.
+*
+*
+* /type/sale:
+*   get:
+*     summary: get sales status.
+*
+*
+* /type/measurement:
+*   get:
+*     summary: get measurement types (unidades de media).
+*
+*
+* /type/user:
+*   get:
+*     summary: get user types.
+*
+*
+* /type/proccess:
+*   get:
+*     summary: get process types (cocina).
+*
+*
+*/
+
+
 //Comidas
-typesRouter.get('/foodtype',getFoodType)
-typesRouter.post('/foodtype',[passport.authenticate('jwt',{session:false}),isAdmin],postFoodType)
-typesRouter.put('/foodtype',[passport.authenticate('jwt',{session:false}),isAdmin],putFoodType)
+typesRouter.get('/food',getFoodType)
+typesRouter.post('/food',[passport.authenticate('jwt',{session:false}),isAdmin],postFoodType)
+typesRouter.put('/food',[passport.authenticate('jwt',{session:false}),isAdmin],putFoodType)
 
 //Movimientos
-typesRouter.get('/movementtype' ,getMovementType)
-typesRouter.post('/movementtype',[passport.authenticate('jwt',{session:false}),isAdmin],postMovementType)
-typesRouter.put('/movementtype' ,[passport.authenticate('jwt',{session:false}),isAdmin],putMovementType)
+typesRouter.get('/movement' ,getMovementType)
+typesRouter.post('/movement',[passport.authenticate('jwt',{session:false}),isAdmin],postMovementType)
+typesRouter.put('/movement' ,[passport.authenticate('jwt',{session:false}),isAdmin],putMovementType)
 
 //Ventas
-typesRouter.get('/salestatus' ,getSaleStatus)
-typesRouter.post('/salestatus',[passport.authenticate('jwt',{session:false}),isAdmin],postSaleStatus)
-typesRouter.put('/salestatus' ,[passport.authenticate('jwt',{session:false}),isAdmin],putSaleStatus)
+typesRouter.get('/sale' ,getSaleStatus)
+typesRouter.post('/sale',[passport.authenticate('jwt',{session:false}),isAdmin],postSaleStatus)
+typesRouter.put('/sale' ,[passport.authenticate('jwt',{session:false}),isAdmin],putSaleStatus)
+
+//Unidades de medida
+typesRouter.get('/measurement' ,getMeasurement)
+typesRouter.post('/measurement',[passport.authenticate('jwt',{session:false}),isAdmin],postMeasurement)
+typesRouter.put('/measurement' ,[passport.authenticate('jwt',{session:false}),isAdmin],putMeasurement)
 
 //Usuarios
-typesRouter.get('/usertype' ,getUserType)
-typesRouter.post('/usertype',[passport.authenticate('jwt',{session:false}),isAdmin],postUserType)
-typesRouter.put('/usertype' ,[passport.authenticate('jwt',{session:false}),isAdmin],putUserType)
+typesRouter.get('/user' ,getUserType)
+typesRouter.post('/user',[passport.authenticate('jwt',{session:false}),isAdmin],postUserType)
+typesRouter.put('/user' ,[passport.authenticate('jwt',{session:false}),isAdmin],putUserType)
 
 //Procesos de cocina
 typesRouter.get('/proccess' ,getProccess)

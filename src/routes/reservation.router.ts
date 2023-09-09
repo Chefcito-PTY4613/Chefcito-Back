@@ -4,17 +4,15 @@ import {
   cancelReservation,
   finishReservation,
   getReservation,
-  getReservationManagement
+  getReservationManagement,
 } from "../controllers/reservation.controller";
 import passport from "passport";
 
 const reservationRouter = Router();
 
-reservationRouter.get("/reservation/management", 
-  getReservationManagement);
+reservationRouter.get("/reservation/management", getReservationManagement);
 
-reservationRouter.get("/reservation",
-  getReservation);
+reservationRouter.get("/reservation", getReservation);
 
 reservationRouter.post(
   "/reservation",

@@ -4,8 +4,8 @@ import { IUpdateUserType, UserType } from "../../models/types/userType";
 
 export const getUserType =  async(req: Request, res: Response) => {
   try {
-    const userTypes = await UserType.find()
-    res.json({userTypes:userTypes})
+    const data = await UserType.find()
+    res.json(data)
   } catch (error) {
     res.status(400).json({msg:'Ha ocurrido un erro'})
   }
@@ -21,9 +21,9 @@ export const postUserType = async (req: Request, res: Response) => {
   const userType = await UserType.findOne({ name });
   if (userType) return res.status(400).json({ msg: "El tipo ya existe" });
 
-  const newUserType = new UserType({ name, desc });
-  await newUserType.save();
-  return res.status(201).json(newUserType);
+  const data = new UserType({ name, desc });
+  await data.save();
+  return res.status(201).json(data);
 };
 
 interface IUserTypeToUpdate{
@@ -45,8 +45,8 @@ export const putUserType = async (req: Request, res: Response) => {
   if(name)toUpdate.name = name
 
   try {
-      const updatedUserType  = await UserType.findByIdAndUpdate(id,{...toUpdate},{new: true})
-      return res.status(200).json(updatedUserType)
+      const data  = await UserType.findByIdAndUpdate(id,{...toUpdate},{new: true})
+      return res.status(200).json(data)
   } catch (_) {
       return res.status(400).json({msg:'Registro repetido'})
   }
