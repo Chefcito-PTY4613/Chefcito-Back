@@ -13,6 +13,7 @@ import typeRouter from "./routes/types.routes";
 import reservationRouter from "./routes/reservation.router";
 import tableRouter from "./routes/table.router";
 import userRouter from "./routes/user.routes";
+import ingredientRouter from "./routes/ingredient.router";
 
 const swaggerOptions: swaggerJSDoc.Options = {
     definition: {
@@ -25,6 +26,7 @@ const swaggerOptions: swaggerJSDoc.Options = {
   },
   apis: [
     "./src/routes/auth.routes.ts",
+    "./src/routes/ingredient.router.ts",
     "./src/routes/reservation.router.ts",
     "./src/routes/table.router.ts",
     "./src/routes/types.routes.ts",
@@ -38,7 +40,7 @@ const swaggerDocs = swaggerJSDoc(swaggerOptions);
 const app = express();
 
 //settings
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 4000);
 
 //middlewares
 app.use(morgan("dev"));
@@ -50,6 +52,7 @@ passport.use(passMiddleware);
 
 //routes
 app.use(authRouter);
+app.use(ingredientRouter)
 app.use(userRouter);
 app.use(tableRouter);
 app.use(reservationRouter);
