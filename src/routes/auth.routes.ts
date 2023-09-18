@@ -41,7 +41,7 @@ const authRouter = Router();
 *   post:
 *     summary: Login de usuarios.
 *     description: Login de usuarios en general.
-*     requestBody:
+*     requestBody:b
 *       required: true
 *       content:
 *         application/json:
@@ -65,7 +65,6 @@ const authRouter = Router();
 
 
 authRouter.post("/signup", signup);
-
 
 authRouter.post("/login", login);
 
