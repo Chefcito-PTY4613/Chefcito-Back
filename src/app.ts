@@ -14,6 +14,7 @@ import reservationRouter from "./routes/reservation.router";
 import tableRouter from "./routes/table.router";
 import userRouter from "./routes/user.routes";
 import ingredientRouter from "./routes/ingredient.router";
+import foodRouter from "./routes/food.router";
 
 const swaggerOptions: swaggerJSDoc.Options = {
     definition: {
@@ -56,6 +57,7 @@ app.use(ingredientRouter)
 app.use(userRouter);
 app.use(tableRouter);
 app.use(reservationRouter);
+app.use(foodRouter);
 app.use('/type',typeRouter);
 
 //Docs

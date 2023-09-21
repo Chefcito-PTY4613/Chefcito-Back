@@ -7,6 +7,7 @@ import { FoodType, IFoodType } from "../models/types/foodType";
 import { MovementType, IMovementType } from "../models/types/movementType";
 import { IProcessType, ProcessType } from "../models/types/process";
 import { IUnitOfMeasurement, UnitOfMeasurement } from "../models/types/unitOfMeasurement";
+import { Food, IFood } from "../models/food";
 
 const setUserTypes = async () => {
   try {
@@ -137,7 +138,7 @@ const setFoodType = async () => {
       sheduleEnd: 13,
     },
     { 
-      name: "Almuerzo",
+      name: "",
       color: "#A090FF",
       sheduleStart: 12,
       sheduleEnd: 23,
@@ -158,11 +159,60 @@ const setFoodType = async () => {
   FoodType.insertMany(foodTypes);
 };
 
+const setFood = async ()=>{
+  const data = await Food.find().limit(3);
+  if (data.length !== 0) return;
+  const type = await FoodType.find().limit(3) as Array<IFoodType>;
+  const breackfast = type.find(({name})=>name=='Desayuno')
+  const mealt = type.find(({name})=>name=='Almuerzo')
+  const combo = type.find(({name})=>name=='Combo')
+  
+  const foods: Array<IFood> = [
+    { name:'Huevos estrellados',
+      desc:'Occaecat officia aliquip consequat eiusmod elit commodo aliqua occaecat eiusmod aliquip nulla elit. Labore sit proident nisi officia eiusmod velit irure et tempor sunt.',
+      img:'https://placebear.com/360/360',
+      price:1000,
+      type: breackfast?.id
+    },
+    { name:'Pan con palta',
+      desc:'Pariatur reprehenderit do elit ipsum nulla mollit dolor minim irure tempor ex cupidatat ad. Qui id ipsum nostrud amet duis ea non ad nulla enim.',
+      img:'https://placebear.com/355/355',
+      price:1200,
+      type: breackfast?.id
+    },
+    { name:'Pollo con arroz',
+      desc:'Pariatur reprehenderit do elit ipsum nulla mollit dolor minim irure tempor ex cupidatat ad. Qui id ipsum nostrud amet duis ea non ad nulla enim.',
+      img:'https://placekitten.com/355/355',
+      price:4000,
+      type: mealt?.id
+    },
+    { name:'Gohan',
+      desc:'Pariatur reprehenderit do elit ipsum nulla mollit dolor minim irure tempor ex cupidatat ad. Qui id ipsum nostrud amet duis ea non ad nulla enim.',
+      img:'https://placekitten.com/355/355',
+      price:3200,
+      type: mealt?.id
+    },
+    { name:'Pan con huevo y cafe',
+      desc:'Pariatur reprehenderit do elit ipsum nulla mollit dolor minim irure tempor ex cupidatat ad. Qui id ipsum nostrud amet duis ea non ad nulla enim.',
+      img:'https://placebeard.it/640x360',
+      price:3500,
+      type: combo?.id
+    },
+    { name:'2 Churrascos y 2 Bebidas',
+      desc:'Pariatur reprehenderit do elit ipsum nulla mollit dolor minim irure tempor ex cupidatat ad.',
+      img:'https://placebeard.it/640x360',
+      price:5800,
+      type: combo?.id
+    },
+  ]
+  Food.insertMany(foods);
+  
+}
+
 const setMovementType = async () => {
   const data = await MovementType.find().limit(3);
 
   if (data.length  !== 0) return;
-
 
   const movementTypes: Array<IMovementType> = [
     {
@@ -224,7 +274,9 @@ const setMeasurement = async () => {
   UnitOfMeasurement.insertMany(unitOfMeasurement);
 };
 
-export default {
+
+
+export default [
   setUserTypes,
   setAdmin,
   setTables,
@@ -232,5 +284,6 @@ export default {
   setFoodType,
   setMovementType,
   setProcess,
-  setMeasurement
-};
+  setMeasurement,
+  setFood
+];

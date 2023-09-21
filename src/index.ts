@@ -1,14 +1,9 @@
 import app from "./app";
 import './database'
+import { runAll } from "./libs/fn.ratapan";
 import setup from "./libs/setup";
 
-setup.setUserTypes()
-setup.setAdmin()
-setup.setTables()
-setup.setSaleStatus()
-setup.setFoodType()
-setup.setMovementType()
-setup.setProcess()
-setup.setMeasurement()
+runAll([...setup])
+
 
 app.listen(app.get('port'))

@@ -2,20 +2,36 @@ import { model, Schema, Types } from "mongoose";
 
 export interface IFood {
   id?: Types.ObjectId;
-  name?: String;
-  desc?: number;
-  stock?: number;
-  stockFlag?: number;
-  unit?: Types.ObjectId;
+  name?: string;
+  desc?: string;
+  price?: number;
+  img?: string;
+  type?: Types.ObjectId;
 }
 
 const food: Schema = new Schema(
   {
-    add:{
-      type:Boolean,
-      required:true
-    },amount:{
-      type:Number
+    name:{
+      type:String,
+      required:true,
+      unique:true
+    },
+    desc:{
+      type:String,
+      required:true,
+    },
+    price:{
+      type:Number,
+      required:true,
+    },
+    img:{
+      type:String,
+      required:true,
+    },
+    type:{
+      required:true,
+      ref:"FoodType",
+      type:Types.ObjectId
     }
   },
   {
