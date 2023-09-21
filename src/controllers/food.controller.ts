@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { optionalToUpdate } from "../libs/fn.ratapan";
 import { IFood, Food } from "../models/food";
+import { uploadImageToS3 } from "../config/R2.config";
 
 export const getFood = async (req: Request, res: Response) => {
   try {
@@ -12,23 +13,28 @@ export const getFood = async (req: Request, res: Response) => {
 };
 
 export const postFood = async (req: Request, res: Response) => {
-  const { name, desc, img, price, type } = req.body as IFood;
+  const { name, nameFile, desc, price, type } = req.body as IFood;
+  const img = req.file?.buffer;
 
-  if (!name || !desc || !img|| !price|| !type)
+  if (!name || !desc || !img|| !price|| !type || !nameFile)
     return res.status(400).json({
-      msg: "Datos incompletos (name, desc, img, price, type)",
-    });
+      msg: "Datos incompletos (name, nameFile, desc, img, price, type)",
+  });
+
+const respS3 = await uploadImageToS3(img,'foods',nameFile)
+  if (respS3.url === null)
+    return res.status(400).json({msg: "Hubo un problema con la imagen, ve que sea un png",});
 
   const toUpdate = {
     name: name,
     desc: desc,
-    img:img, 
+    img:respS3.url, 
     price:price, 
     type:type
   };
   const options = optionalToUpdate(toUpdate);
 
-  // el tipo ya existe?
+  // la comida ya existe?
   const is = await Food.findOne({ name });
   if (is) return res.status(400).json({ msg: "La comida ya existe" });
 

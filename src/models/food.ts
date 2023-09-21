@@ -3,6 +3,7 @@ import { model, Schema, Types } from "mongoose";
 export interface IFood {
   id?: Types.ObjectId;
   name?: string;
+  nameFile?:string;
   desc?: string;
   price?: number;
   img?: string;
