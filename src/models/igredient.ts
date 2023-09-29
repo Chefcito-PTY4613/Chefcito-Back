@@ -1,9 +1,10 @@
 import { model, Schema, Types } from "mongoose";
 
 export interface IIngredient {
+  _id?: Types.ObjectId;
   id?: Types.ObjectId;
   name?: String;
-  desc?: number;
+  desc?: String;
   stock?: number;
   stockFlag?: number;
   unit?: Types.ObjectId;

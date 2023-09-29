@@ -2,7 +2,7 @@ import { Schema, Types, model } from "mongoose";
 
 export interface IProcessType{
     id?: Types.ObjectId,
-    name:string,
+    name?:string,
 }
 export interface IUpdateProcessType{
     id: Types.ObjectId,
