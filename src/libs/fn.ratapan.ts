@@ -42,7 +42,6 @@ export const objectsToSrings = (arr:Array<object>)=>{
 
 export const runAll = (arr:Array<Function>)=>{
   arr.forEach((fn)=>{
-    console.log(fn)
     return fn()
   })
 }

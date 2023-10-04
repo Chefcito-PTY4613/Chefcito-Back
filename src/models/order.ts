@@ -8,6 +8,7 @@ export interface IOrder extends Document {
   food?: Types.ObjectId;
   sale?: Types.ObjectId;
   desc?: string;
+  status?:Types.ObjectId;
 }
 
 const OrderSchema: Schema = new Schema(
@@ -19,6 +20,11 @@ const OrderSchema: Schema = new Schema(
     },
     sale:{
       ref: "Sale",
+      required: true,
+      type: Schema.Types.ObjectId,
+    },
+    status:{
+      ref: "OrderStatus",
       required: true,
       type: Schema.Types.ObjectId,
     },
@@ -53,6 +59,7 @@ OrderSchema.post<IOrder>("save", async function (doc: IOrder,next) {
       ,type:       venta.id
     }
   ))
+  console.log('movements',movements)
    
   Movement.insertMany(movements)
 

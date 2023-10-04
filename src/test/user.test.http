@@ -24,7 +24,7 @@ content-type: application/json
 
 {
     "mail":"ja.sabando@duocuc.cl",
-    "password":"4523452345",
+    "password":"12345678",
     "name":"javier",
     "lastName":"sabando"
 }

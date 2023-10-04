@@ -13,6 +13,7 @@ import {
 } from "../models/types/unitOfMeasurement";
 import { Food, IFood } from "../models/food";
 import { IRecipe, Recipe } from "../models/recipe";
+import { IOrderStatus, OrderStatus } from "../models/types/orderStatus";
 
 const setUserTypes = async () => {
   try {
@@ -410,6 +411,28 @@ const setRecipe = async () => {
   Recipe.insertMany(recipeList);
 };
 
+const setOrderStatus = async () => {
+  const data = await OrderStatus.find();
+  if (data.length >= 4) return;
+
+  const orderStatus: Array<IOrderStatus> = [
+    {
+      name: "Ordenado",
+    },
+    {
+      name: "Tomado",
+    },
+    {
+      name: "Entregado",
+    },
+    {
+      name: "Cancelado",
+    }
+  ];
+  OrderStatus.insertMany(orderStatus);
+};
+
+
 export default [
   setUserTypes,
   setAdmin,
@@ -422,4 +445,5 @@ export default [
   setFood,
   setIngredients,
   setRecipe,
+  setOrderStatus,
 ];

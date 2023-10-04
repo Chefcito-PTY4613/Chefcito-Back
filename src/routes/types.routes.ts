@@ -8,6 +8,7 @@ import { getSaleStatus, postSaleStatus, putSaleStatus } from "../controllers/typ
 import { getFoodType, postFoodType, putFoodType } from "../controllers/types/foodType.controller";
 import { getProccess, postProccess, putProccess } from "../controllers/types/process.controller";
 import { getMeasurement, postMeasurement, putMeasurement } from "../controllers/types/unitOfMeasurement.controller";
+import { getOrderStatus, postOrderStatus, putOrderStatus } from "../controllers/types/orderStatus.controller";
 
 const typesRouter = Router()
 
@@ -76,6 +77,11 @@ typesRouter.put('/user' ,[passport.authenticate('jwt',{session:false}),isAdmin],
 typesRouter.get('/proccess' ,getProccess)
 typesRouter.post('/proccess',[passport.authenticate('jwt',{session:false}),isAdmin],postProccess)
 typesRouter.put('/proccess' ,[passport.authenticate('jwt',{session:false}),isAdmin],putProccess)
+
+//Orden
+typesRouter.get('/order' ,getOrderStatus)
+typesRouter.post('/order',[passport.authenticate('jwt',{session:false}),isAdmin],postOrderStatus)
+typesRouter.put('/order' ,[passport.authenticate('jwt',{session:false}),isAdmin],putOrderStatus)
 
 
 export default typesRouter;
