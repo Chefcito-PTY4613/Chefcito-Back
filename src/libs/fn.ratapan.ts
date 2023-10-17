@@ -45,3 +45,7 @@ export const runAll = (arr:Array<Function>)=>{
     return fn()
   })
 }
+
+export const regexSearch = (reg:String)=>(
+  { $regex: new RegExp(`${reg}`, 'i')}
+)
