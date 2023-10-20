@@ -95,7 +95,6 @@ export const getCustomers = async (req: Request, res: Response) => {
       .json({ msg: "El tipo de usuario cliente no existe" });
 
   const limit: number = 10;
-console.log('req.query.name>    ',req.query)
   //byName
   if (req.query?.name) {
     const customers = await User.find({
@@ -182,7 +181,7 @@ export const getWorker = async (req: Request, res: Response) => {
   if (req.query?.name) {
     const customers = await User.find({
       name:regexSearch(`${req.query.name}`),
-      userType: typesUser.id,
+      userType: {$ne:typesUser.id},
     })
       .limit(limit)
       .skip((pageInt - 1) * limit)
@@ -190,7 +189,7 @@ export const getWorker = async (req: Request, res: Response) => {
 
     const customersCount = await User.countDocuments({
       name:regexSearch(`${req.query.name}`),
-      userType: typesUser.id,
+      userType: {$ne:typesUser.id},
     });
 
     if (customers)
@@ -205,12 +204,12 @@ export const getWorker = async (req: Request, res: Response) => {
       .json({ msg: "El ususario con este nombre no existe" });
   }
 
-  const customers = await User.find({ userType: typesUser.id })
+  const customers = await User.find({ userType: {$ne:typesUser.id} })
     .limit(limit)
     .skip((pageInt - 1) * limit)
     .sort({ createdAt: -1 });
 
-  const customersCount = await User.countDocuments({ userType: typesUser.id });
+  const customersCount = await User.countDocuments({ userType: {$ne:typesUser.id} });
 
   return res.status(200).json({
     customers,
@@ -223,10 +222,12 @@ export const getWorker = async (req: Request, res: Response) => {
 export const postWorker = async (req: Request, res: Response) => {
   const { mail, password, name, lastName, phone, userType } =
     req.body as IUserWorker;
+    console.log("🚀 ~ file: user.controller.ts:224 ~ postWorker ~ { mail, password, name, lastName, phone, userType }:", { mail, password, name, lastName, phone, userType })
 
   // están los datos?
-  if (!mail || !password || !name || !lastName || !userType)
-    return res.status(400).json({ msg: "Datos incompletos" });
+  if (!mail || !password || !name || !lastName || !userType){
+
+    return res.status(400).json({ msg: "Datos incompletos" })}
   // el usuario ya existe?
   const user = await User.findOne({ mail });
   if (user) return res.status(400).json({ msg: "El usuario ya existe" });
@@ -244,12 +245,18 @@ export const postWorker = async (req: Request, res: Response) => {
     password: password,
     name: name,
     lastName: lastName,
-    phone: phone,
     userType: userType,
   };
+  let phoneObj:Record<string, unknown> = {}
+  if(phone !== undefined )if(phone?.number!== undefined && phone?.code!== undefined){
+    phoneObj['code'] = phone.code
+    phoneObj['number'] = phone?.number
+  }
   const options = optionalToUpdate(toCreate);
-  const newCustomer = new User(options);
-  newCustomer.save();
 
-  return res.status(201).json(newCustomer);
+  console.log({...options,phone:{...phoneObj}})
+  const newWorker = new User({...options,phone:{...phoneObj}});
+  newWorker.save();
+
+  return res.status(201).json(newWorker);
 };

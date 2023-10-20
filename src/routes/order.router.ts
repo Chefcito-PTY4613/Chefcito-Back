@@ -21,14 +21,13 @@ orderRouter.post(
 
 orderRouter.put(
   "/order",
-  [passport.authenticate("jwt", { session: false })],
+  [passport.authenticate("jwt", { session: false })]
   
 );
 
 orderRouter.delete(
   "/order",
-  [passport.authenticate("jwt", { session: false })],
-  
+  [passport.authenticate("jwt", { session: false })]
 );
 
 export default orderRouter;

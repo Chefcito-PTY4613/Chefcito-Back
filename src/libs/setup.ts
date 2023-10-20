@@ -420,7 +420,7 @@ const setOrderStatus = async () => {
       name: "Ordenado",
     },
     {
-      name: "Tomado",
+      name: "Orden Lista",
     },
     {
       name: "Entregado",
