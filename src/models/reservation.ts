@@ -5,14 +5,15 @@ import { SaleStatus } from "./types/saleStatus";
 
 export interface IReservation extends Document {
   id?: Types.ObjectId;
-  table: Types.ObjectId;
-  user: Types.ObjectId;
+  table?: Types.ObjectId;
+  user?: Types.ObjectId;
+  active?: boolean;
 }
 
 const ReservationSchema: Schema = new Schema(
   {
     table: {
-      ref: "User",
+      ref: "Table",
       required: true,
       type: Schema.Types.ObjectId,
     },

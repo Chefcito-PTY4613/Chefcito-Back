@@ -11,9 +11,9 @@ import { isAdmin } from "../middlewares/isUserType";
 
 const reservationRouter = Router();
 
-reservationRouter.get("/reservation/management",[passport.authenticate("jwt", { session: false }), isAdmin], getReservationManagement);
+reservationRouter.post("/reservation/management",[passport.authenticate("jwt", { session: false }), isAdmin], getReservationManagement);
 
-reservationRouter.get("/reservation", getReservation);
+reservationRouter.get("/reservation",[passport.authenticate("jwt", { session: false })], getReservation);
 
 reservationRouter.post(
   "/reservation",
