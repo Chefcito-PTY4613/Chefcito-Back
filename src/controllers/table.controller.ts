@@ -3,6 +3,12 @@ import { Table, ITable } from "../models/table";
 import { IUserAndType } from "../models/user";
 
 export const getTable = async (req: Request, res: Response) => {
+    if (req.query?.id){
+        const data = await Table.findById(req.query?.id)
+        if(data) return res.status(200).json(data);
+        return res.status(400).json({msg:'ha ocurrido un error'})
+    }
+
     const data = await Table.find()
     if(data) return res.status(200).json(data)
     return res.status(400).json({msg:'ha ocurrido un error'})

@@ -36,7 +36,7 @@ export const createReservation = async (req: Request, res: Response) => {
 
   const options = optionalToUpdate(toUpdate);
 
-  // el tipo ya existe?
+  // mesa ocupada?
   const is = (await Table.findById(table)) as ITable;
   if (is.active === false)
     return res.status(400).json({ msg: "La mesa esta en uso" });
