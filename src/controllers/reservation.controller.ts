@@ -13,7 +13,6 @@ export const getReservationManagement = async (req: Request, res: Response) => {
 
   const reservation = (await Reservation.findOne({ table })) as IReservation;
 
-  console.log(reservation);
   const sale = (await Sale.findOne({ reservation: reservation.id })) as ISale;
 
   const orders = await Order.find({ sale: sale.id })
