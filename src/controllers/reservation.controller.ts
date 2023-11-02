@@ -9,6 +9,7 @@ export const getReservation = async (req: Request, res: Response) => {
   return res.json(await Reservation.find());
 };
 export const getReservationManagement = async (req: Request, res: Response) => {
+  try{
   const { table } = req.body as IReservation;
 
   const reservation = (await Reservation.findOne({ table })) as IReservation;
@@ -20,6 +21,10 @@ export const getReservationManagement = async (req: Request, res: Response) => {
     .populate("status",'name');
 
   return res.json({ reservation, sale, orders });
+
+  } catch (error) {
+    res.status(400).json({ msg: "Ha ocurrido un erro" });
+  }
 };
 
 export const createReservation = async (req: Request, res: Response) => {

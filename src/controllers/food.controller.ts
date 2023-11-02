@@ -2,12 +2,17 @@ import { Request, Response } from "express";
 import { optionalToUpdate } from "../libs/fn.ratapan";
 import { IFood, Food } from "../models/food";
 import { uploadImageToS3 } from "../config/R2.config";
+import { Recipe } from "../models/recipe";
 
 export const getFood = async (req: Request, res: Response) => {
   try {
     if (req.query?.id){
-      const data = await Food.findById(req.query?.id)
-      if(data) return res.status(200).json(data);
+      const food = await Food.findById(req.query?.id) as IFood
+      if(food) {
+        const recipe = await Recipe.find({food:food.id})
+        .populate('ingredient').populate('process')
+        return res.status(200).json({food,recipe});
+      }
       return res.status(400).json({msg:'ha ocurrido un error'})
     }
     const data = await Food.find();
