@@ -2,6 +2,7 @@ import { model, Schema, Document, Types } from "mongoose";
 import { Table } from "./table";
 import { Sale, ISale } from "./sale";
 import { SaleStatus } from "./types/saleStatus";
+import { io } from "../app";
 
 export interface IReservation extends Document {
   id?: Types.ObjectId;
@@ -35,11 +36,12 @@ const ReservationSchema: Schema = new Schema(
 // trigger mesa
 ReservationSchema.pre<IReservation>("save", async function (next) {
   const reservation: IReservation = this;
-  await Table.findByIdAndUpdate(
+  const table =  await Table.findByIdAndUpdate(
     reservation.table,
     { active: false },
     { new: true }
   );
+  io.emit('table:save',table)
   next();
 });
 ReservationSchema.post<IReservation>(

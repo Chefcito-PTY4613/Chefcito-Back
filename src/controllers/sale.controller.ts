@@ -6,6 +6,7 @@ import { IOrderStatus, OrderStatus } from "../models/types/orderStatus";
 import { IReservation, Reservation } from "../models/reservation";
 
 import { ISaleStatus, SaleStatus } from "../models/types/saleStatus";
+import { io } from "../app";
 
 
 export const paySale = async (req: Request, res: Response) => {
@@ -42,7 +43,7 @@ export const paySale = async (req: Request, res: Response) => {
         active:false
         
       })
-      await Table.findByIdAndUpdate(
+      const table = await Table.findByIdAndUpdate(
         reservationData.table,
         { active: true },
         { new: true }
@@ -52,6 +53,8 @@ export const paySale = async (req: Request, res: Response) => {
           total,
           payTime: new Date()
         })
+        
+    io.emit('table:save',table)
         
     let resp = ordersData.length>0?'Pago realizado':'Reserva cancelada';
     return res.status(200).json({msg:resp})
@@ -94,7 +97,7 @@ export const paySaleForced = async (req: Request, res: Response) => {
       active:false
 
     })
-    await Table.findByIdAndUpdate(
+    const table = await Table.findByIdAndUpdate(
       reservationData.table,
       { active: true },
       { new: true }
@@ -105,6 +108,7 @@ export const paySaleForced = async (req: Request, res: Response) => {
       payTime: new Date()
     })
 
+    io.emit('table:save',table)
     return res.status(200).json({msg:'Venta realizada'})
 
 

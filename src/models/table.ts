@@ -1,4 +1,5 @@
 import { model, Schema, Document, Types } from "mongoose";
+import { io } from "../app";
 
 export interface ITable{
     id?: Types.ObjectId,
@@ -28,7 +29,7 @@ const tableSchema:Schema = new Schema({
 });
 tableSchema.post('save', function(doc) {
     const table = this
-    
+    io.emit('table:save',table)
 })
 
 

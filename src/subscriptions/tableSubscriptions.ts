@@ -3,14 +3,13 @@ import { ITable } from "../models/table";
 
 /**
  * Mesa update
- * 
 */
 
 export default (io:Server) => {
   io.on("connection", (socket) => {
-    socket.on('table:newTable', (data:ITable, callback) => {   
+    socket.on('table:save', (data:ITable, callback) => {   
       callback()   
-      socket.broadcast.emit('table:newTable',data)
+      socket.broadcast.emit('table:save',data)
     });
   });
 };
