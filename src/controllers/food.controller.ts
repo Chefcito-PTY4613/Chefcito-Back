@@ -5,6 +5,11 @@ import { uploadImageToS3 } from "../config/R2.config";
 
 export const getFood = async (req: Request, res: Response) => {
   try {
+    if (req.query?.id){
+      const data = await Food.findById(req.query?.id)
+      if(data) return res.status(200).json(data);
+      return res.status(400).json({msg:'ha ocurrido un error'})
+    }
     const data = await Food.find();
     res.json(data);
   } catch (error) {
