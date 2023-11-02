@@ -26,5 +26,10 @@ const tableSchema:Schema = new Schema({
     timestamps:true,
     versionKey:false
 });
+tableSchema.post('save', function(doc) {
+    const table = this
+    
+})
+
 
 export const Table = model<ITable>('Table',tableSchema)

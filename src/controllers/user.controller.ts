@@ -46,11 +46,11 @@ export const login = async (req: Request, res: Response) => {
 
   if (user.comparePassword) {
     const isMatch = await user.comparePassword(password);
-    if (!isMatch) return res.status(401).json({ msg: "Conteseña invalida" });
+    if (!isMatch) return res.status(401).json({ msg: "Contraseña invalida" });
   }
   const token = createToken(
     { id: user.id, mail: user.mail, userType: user.userType },
-    30
+    1
   );
 
   return res.status(200).json({ token, user });
@@ -222,7 +222,6 @@ export const getWorker = async (req: Request, res: Response) => {
 export const postWorker = async (req: Request, res: Response) => {
   const { mail, password, name, lastName, phone, userType } =
     req.body as IUserWorker;
-    console.log("🚀 ~ file: user.controller.ts:224 ~ postWorker ~ { mail, password, name, lastName, phone, userType }:", { mail, password, name, lastName, phone, userType })
 
   // están los datos?
   if (!mail || !password || !name || !lastName || !userType){
@@ -254,7 +253,6 @@ export const postWorker = async (req: Request, res: Response) => {
   }
   const options = optionalToUpdate(toCreate);
 
-  console.log({...options,phone:{...phoneObj}})
   const newWorker = new User({...options,phone:{...phoneObj}});
   newWorker.save();
 

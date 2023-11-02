@@ -25,6 +25,18 @@ export const isAdminOrStore= async (req:Request, res:Response, next:NextFunction
     return res.status(500).send({ message: error });
   }
 }
+export const isAdminOrWaiter= async (req:Request, res:Response, next:NextFunction) =>{
+  try {
+    const user  = req.user as IUserAndType
+    if (user.userType.name === "admin" || user.userType.name === "waiter") {
+      next();
+      return;
+    }
+    return res.status(403).json({ message: "Require admin or waiter Role!" });
+  } catch (error) {
+    return res.status(500).send({ message: error });
+  }
+}
 
 export const isCustomer = async (req:Request, res:Response, next:NextFunction) => {
   try {

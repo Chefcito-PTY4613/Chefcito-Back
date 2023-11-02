@@ -1,6 +1,7 @@
 import chat from "./chatSubscription";
 import movement from "./movementSubscription";
 import order from "./orderSubscription";
+import reservation from "./reservationSubscriptions";
 
 import { Server } from "socket.io"; 
 
@@ -18,4 +19,5 @@ export const subscriptions = {
   chat,
   movement,
   order,
+  reservation,
 };

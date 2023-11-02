@@ -2,7 +2,8 @@ import { Router } from "express";
 import {
   getOrder,
   getOrderManagement,
-  createOrder
+  createOrder,
+  getOrderBySale
 } from "../controllers/order.controller";
 import passport from "passport";
 import { isAdmin } from "../middlewares/isUserType";
@@ -11,7 +12,9 @@ const orderRouter = Router();
 
 orderRouter.get("/order/management",[passport.authenticate("jwt", { session: false }), isAdmin], getOrderManagement);
 
-orderRouter.get("/order", getOrder);
+orderRouter.get("/order",passport.authenticate("jwt", { session: false }), getOrder);
+
+orderRouter.get("/orderBySale", getOrderBySale);
 
 orderRouter.post(
   "/order",

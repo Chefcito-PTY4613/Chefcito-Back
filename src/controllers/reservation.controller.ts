@@ -44,14 +44,11 @@ export const createReservation = async (req: Request, res: Response) => {
   try {
     const reservation: IReservation = new Reservation(options);
     await reservation.save();
-
     const sale = await Sale.findOne({ reservation: reservation.id });
-
     return res.status(201).json({ reservation, sale });
   } catch (_) {
     return res.status(400).json({ msg: "Error de registro" });
   }
-
   // {
   //   "reservation": {
   //     "table": "64f8ea7e5f0db14541aa7f7a",

@@ -2,10 +2,18 @@ import { model, Schema, Document, Types } from "mongoose";
 import { IRecipe, Recipe } from "./recipe";
 import { IMovement, Movement } from "./movement";
 import { IMovementType, MovementType } from "./types/movementType";
+import { IFood } from "./food";
 
 export interface IOrder extends Document {
   id?: Types.ObjectId;
   food?: Types.ObjectId;
+  sale?: Types.ObjectId;
+  desc?: string;
+  status?:Types.ObjectId;
+}
+export interface IOrderFood extends Document {
+  id?: Types.ObjectId;
+  food?: IFood;
   sale?: Types.ObjectId;
   desc?: string;
   status?:Types.ObjectId;

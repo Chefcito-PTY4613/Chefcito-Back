@@ -18,6 +18,7 @@ import ingredientRouter from "./routes/ingredient.router";
 import foodRouter from "./routes/food.router";
 import orderRouter from "./routes/order.router";
 import { subscriptions } from "./subscriptions/subscriptions";
+import saleRouter from "./routes/sale.router";
 
 //init
 const app = express();
@@ -55,6 +56,7 @@ subscriptions.geneal(io);
 subscriptions.chat(io);
 subscriptions.movement(io);
 subscriptions.order(io);
+subscriptions.reservation(io);
 
 //routes
 app.use(authRouter);
@@ -64,6 +66,7 @@ app.use(tableRouter);
 app.use(reservationRouter);
 app.use(foodRouter);
 app.use(orderRouter);
+app.use(saleRouter);
 app.use("/type", typeRouter);
 
 const allRoutes = expressListEndpoints(app);
@@ -85,10 +88,24 @@ app.get("/", (req, res) => {
     route.path
   }" target="_blank"> http://localhost:4000${route.path}</a> 
   <br/>
+  <br/>
   Methods:</br> ${route.methods.join(", ")}
+  <br/>
+  <br/>
+  Middlewares:</br> 
+  ${route.middlewares}
+  </br> 
   `
   );
 
-  res.send(lines.join("<hr/>"));
+  res.send(`
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+    *{
+      font-family: Roboto
+    }
+
+  </style>
+  ${lines.join("<hr/>")}`);
 });
 export {app,io}
