@@ -1,8 +1,8 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-import http from "http"; // Import the HTTP module
-import { Server } from "socket.io"; // Import Socket.io
+import http from "http";
+import { Server } from "socket.io";
 
 import expressListEndpoints, { Endpoint } from "express-list-endpoints";
 
@@ -42,13 +42,11 @@ app.use(passport.initialize());
 passport.use(passMiddleware);
 
 const io = new Server(server, {
-  cors:
-    {
+  cors:{
       origin: "*",
       methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
       credentials: true
     }
-  
 });
 
 //subscriptions sockets
@@ -97,7 +95,6 @@ app.get("/", (req, res) => {
   </br> 
   `
   );
-
   res.send(`
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
@@ -105,7 +102,6 @@ app.get("/", (req, res) => {
       font-family: Roboto
     }
 
-  </style>
-  ${lines.join("<hr/>")}`);
+  </style> ${lines.join("<hr/>")}`);
 });
 export {app,io}

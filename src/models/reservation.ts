@@ -63,5 +63,3 @@ export const Reservation = model<IReservation>(
   "Reservation",
   ReservationSchema
 );
-
-

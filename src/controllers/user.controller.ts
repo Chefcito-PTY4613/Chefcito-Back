@@ -1,6 +1,6 @@
-import { Request, Response, response } from "express";
+import { Request, Response } from "express";
 import { User, IUser, IUserWorker } from "../models/user";
-import { IUpdateUserType, IUserType, UserType } from "../models/types/userType";
+import { IUserType, UserType } from "../models/types/userType";
 import {
   createToken,
   verifiedToken,
@@ -89,12 +89,14 @@ export const getCustomers = async (req: Request, res: Response) => {
   }
 
   const typesUser = await UserType.findOne({ name: "customer" });
+
+
   if (!typesUser)
     return res
       .status(400)
       .json({ msg: "El tipo de usuario cliente no existe" });
 
-  const limit: number = 10;
+  const limit: number = 6;
   //byName
   if (req.query?.name) {
     const customers = await User.find({
@@ -112,7 +114,7 @@ export const getCustomers = async (req: Request, res: Response) => {
 
     if (customers)
       return res.status(200).json({
-        customers,
+        data: customers,
         totalPages: Math.ceil(customersCount / limit),
         currentPage: pageInt,
         total: customersCount,
@@ -130,7 +132,7 @@ export const getCustomers = async (req: Request, res: Response) => {
   const customersCount = await User.countDocuments({ userType: typesUser.id });
 
   return res.status(200).json({
-    customers,
+    data: customers,
     totalPages: Math.ceil(customersCount / limit),
     currentPage: pageInt,
     total: customersCount,
@@ -175,7 +177,7 @@ export const getWorker = async (req: Request, res: Response) => {
       .status(400)
       .json({ msg: "El tipo de usuario cliente no existe" });
 
-  const limit: number = 10;
+  const limit: number = 6;
 
   //byName
   if (req.query?.name) {
@@ -194,7 +196,7 @@ export const getWorker = async (req: Request, res: Response) => {
 
     if (customers)
       return res.status(200).json({
-        customers,
+        data: customers,
         totalPages: Math.ceil(customersCount / limit),
         currentPage: pageInt,
         total: customersCount,
@@ -212,7 +214,7 @@ export const getWorker = async (req: Request, res: Response) => {
   const customersCount = await User.countDocuments({ userType: {$ne:typesUser.id} });
 
   return res.status(200).json({
-    customers,
+    data: customers,
     totalPages: Math.ceil(customersCount / limit),
     currentPage: pageInt,
     total: customersCount,
