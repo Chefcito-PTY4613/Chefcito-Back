@@ -1,13 +1,39 @@
 import { Router } from "express";
 import passport from "passport";
-import { getFood, postFood, putFood } from "../controllers/food.controller";
+import {
+  getFood,
+  getFoodPagination,
+  postFood,
+  putFood,
+} from "../controllers/food.controller";
 import { isAdminOrStore } from "../middlewares/isUserType";
-import {uploadFile} from "../middlewares/multer";
+import { uploadFile } from "../middlewares/multer";
 
-const foodRouter = Router()
+const foodRouter = Router();
 
-foodRouter.get('/food',getFood)
-foodRouter.post('/food', [uploadFile.single('img'),passport.authenticate('jwt',{session:false}),isAdminOrStore],postFood )
-foodRouter.put('/food', [passport.authenticate('jwt',{session:false}),isAdminOrStore], putFood)
+foodRouter.get("/food", getFood);
+foodRouter.get(
+  "/food/pagination",
+  passport.authenticate("jwt", { session: false }),
+  getFoodPagination
+);
+foodRouter.post(
+  "/food",
+  [
+    uploadFile.single("img"),
+    passport.authenticate("jwt", { session: false }),
+    isAdminOrStore,
+  ],
+  postFood
+);
+foodRouter.put(
+  "/food",
+  [
+    uploadFile.single("img"),
+    passport.authenticate("jwt", { session: false }),
+    isAdminOrStore,
+  ],
+  putFood
+);
 
 export default foodRouter;

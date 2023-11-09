@@ -1,5 +1,6 @@
 import { model, Schema, Types } from "mongoose";
 import { Ingredient, IIngredient } from "./igredient";
+import { io } from "../app";
 
 export interface IMovement {
   id?: Types.ObjectId;
@@ -42,17 +43,17 @@ const movement: Schema = new Schema(
 );
 
 movement.pre<IMovement>("save", async function (next) {
-  const { ingredient, amount, add }:IMovement = this
-
-  const filter = await Ingredient.findById(ingredient) as IIngredient
+  const { ingredient, amount, add }: IMovement = this;
+  
+  const filter = (await Ingredient.findById(ingredient)) as IIngredient;
   if (!filter.stock || !amount) return next();
 
-  Ingredient.findByIdAndUpdate(ingredient,{
-    amount: add ? (filter.stock + amount) : (filter.stock - amount)
-  },{
-    returnOriginal: false
-  })
-  
-})
+  const ingredientChange = await Ingredient.findByIdAndUpdate(
+    ingredient,
+    {stock: add ? filter.stock + amount : filter.stock - amount},
+    {returnOriginal: false});
+
+  io.emit('ingredient:changeStock',ingredientChange)
+});
 
 export const Movement = model<IMovement>("Movement", movement);

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { optionalToUpdate, regexSearch } from "../libs/fn.ratapan";
 import { IIngredient, Ingredient } from "../models/igredient";
+import { io } from "../app";
 
 export const getIngredient = async (req: Request, res: Response) => {
   if (!req.query?.page)
@@ -56,16 +57,17 @@ export const getIngredient = async (req: Request, res: Response) => {
 };
 
 export const postIngredient = async (req: Request, res: Response) => {
-  const { name, desc, stock, stockFlag } = req.body as IIngredient;
+  const { name, desc, unit, stock, stockFlag } = req.body as IIngredient;
 
-  if (!name || !desc || !stock || !stockFlag)
+  if (!name || !desc || !stock || !stockFlag || !unit)
     return res.status(400).json({
-      msg: "Datos incompletos (name, desc, stock, stockFlag)",
+      msg: "Datos incompletos (name, desc, stock, unit, stockFlag)",
     });
 
   const toUpdate = {
     name: name,
     desc: desc,
+    unit:unit,
     stock: stock,
     stockFlag: stockFlag,
   };
@@ -78,6 +80,7 @@ export const postIngredient = async (req: Request, res: Response) => {
   try {
     const data = new Ingredient(options);
     await data.save();
+    io.emit('ingredient:update',data)
     return res.status(201).json(data);
   } catch (_) {
     return res.status(400).json({ msg: "Error de registro" });
@@ -85,7 +88,8 @@ export const postIngredient = async (req: Request, res: Response) => {
 };
 
 export const putIngredient = async (req: Request, res: Response) => {
-  const { id, name, desc, stock, stockFlag } = req.body as IIngredient;
+  console.log(req.body)
+  const { id, name, unit, desc, stock, stockFlag } = req.body as IIngredient;
 
   if (!id) return res.status(400).json({ msg: "Se requiere id" });
 
@@ -94,6 +98,7 @@ export const putIngredient = async (req: Request, res: Response) => {
     desc: desc,
     stock: stock,
     stockFlag: stockFlag,
+    unit:unit,
   };
 
   const options = optionalToUpdate(toUpdate);
@@ -101,12 +106,13 @@ export const putIngredient = async (req: Request, res: Response) => {
   if (Object.keys(options).length == 0)
     return res
       .status(400)
-      .json({ msg: "Datos erroneos (name, desc, stock, stockFlag)" });
+      .json({ msg: "Datos erroneos (name, desc, unit, stock, stockFlag)" });
 
   try {
     const data = await Ingredient.findByIdAndUpdate(id, options, {
       new: true,
     });
+    io.emit('ingredient:update',data)
     return res.status(200).json(data);
   } catch (_) {
     return res.status(400).json({ msg: "Error de registro" });

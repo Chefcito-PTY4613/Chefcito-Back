@@ -179,7 +179,7 @@ const setFood = async () => {
       desc: "Occaecat officia aliquip consequat eiusmod elit commodo aliqua occaecat eiusmod aliquip nulla elit. Labore sit proident nisi officia eiusmod velit irure et tempor sunt.",
       img: "https://placebear.com/360/360",
       price: 1000,
-      type: breackfast?.id,
+      type: breackfast?.id
     },
     {
       name: "Pan con palta",
@@ -274,7 +274,7 @@ const setMeasurement = async () => {
       name: "unidad",
     },
     {
-      name: "g",
+      name: "gr",
     },
     {
       name: "ml",
@@ -292,7 +292,7 @@ const setMeasurement = async () => {
   UnitOfMeasurement.insertMany(unitOfMeasurement);
 };
 
-type IUnits = "g" | "ml" | "mg" | "mm" | "cc" | "unidad";
+type IUnits = "gr" | "ml" | "mg" | "mm" | "cc" | "unidad";
 
 const setIngredients = async () => {
   const data = await Ingredient.find().limit(8);
@@ -310,28 +310,28 @@ const setIngredients = async () => {
     {
       name: "Sal",
       desc: "Sacos de sal",
-      unit: getUnit("g"),
+      unit: getUnit("gr"),
       stock: mil(300),
       stockFlag: mil(50),
     },
     {
       name: "azucar",
       desc: "Sacos de azucar",
-      unit: getUnit("g"),
+      unit: getUnit("gr"),
       stock: mil(300),
       stockFlag: mil(50),
     },
     {
       name: "Papa",
       desc: "Ingrediente multi funcional",
-      unit: getUnit("g"),
+      unit: getUnit("gr"),
       stock: mil(500),
       stockFlag: mil(50),
     },
     {
       name: "cafe",
       desc: "Cafe Marley tostado medio con notas de cacao",
-      unit: getUnit("g"),
+      unit: getUnit("gr"),
       stock: mil(100),
       stockFlag: mil(10),
     },

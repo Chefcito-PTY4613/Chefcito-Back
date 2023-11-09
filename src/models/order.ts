@@ -48,15 +48,11 @@ const OrderSchema: Schema = new Schema(
 
 
 OrderSchema.post<IOrder>("save", async function (doc: IOrder,next) {
-  
-  console.log(doc)
   if (!doc.id) next();
 
   const steps  = await Recipe.find({food: doc.food}) as Array<IRecipe>
   const venta = await MovementType.findOne({ name:'Venta'}) as IMovementType
   if(steps.length == 0)next();
-
-  console.log(steps[0])
 
   const movements: Array<IMovement> =  steps.map(({ingredient, amount})=>(
     {
@@ -67,9 +63,11 @@ OrderSchema.post<IOrder>("save", async function (doc: IOrder,next) {
       ,type:       venta.id
     }
   ))
-  console.log('movements',movements)
-   
-  Movement.insertMany(movements)
+
+  for (const movement of movements) {
+    console.log('---------------------------')
+    await new Movement(movement).save();
+  }
 
   next();
 });

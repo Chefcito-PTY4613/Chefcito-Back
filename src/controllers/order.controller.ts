@@ -36,10 +36,10 @@ export const getOrderManagement = async (req: Request, res: Response) => {
 export const createOrder = async (req: Request, res: Response) => {
   const { food, sale, desc, status } = req.body as IOrder;
 
-  if (!food || !sale || !desc || !status)
+  if (!food || !sale || !status)
     return res
       .status(400)
-      .json({ msg: "Datos incompletos (food,sale,desc,status)" });
+      .json({ msg: "Datos incompletos (food,sale,status)" });
   const toUpdate = {
     food: food,
     sale: sale,

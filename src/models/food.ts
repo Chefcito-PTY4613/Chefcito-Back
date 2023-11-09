@@ -1,7 +1,8 @@
 import { model, Schema, Types } from "mongoose";
 
-export interface IFood {
+export interface IFood{
   id?: Types.ObjectId;
+  _id?: Types.ObjectId;
   name?: string;
   nameFile?:string;
   desc?: string;
@@ -10,7 +11,7 @@ export interface IFood {
   type?: Types.ObjectId;
 }
 
-const food: Schema = new Schema(
+const food: Schema = new Schema<IFood>(
   {
     name:{
       type:String,
