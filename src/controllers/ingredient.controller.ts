@@ -55,6 +55,21 @@ export const getIngredient = async (req: Request, res: Response) => {
     total: dataCount,
   });
 };
+export const getIngredientStock = async (req: Request, res: Response) => {
+  if (req.params?.id){
+    try {
+      const ingredient = await Ingredient.findById(req.params?.id).select({
+        name:1,
+        stock:1
+      })
+      return res.status(200).json({ingredient})
+    } catch (error) {
+      res.status(400).json({ msg: "Error al buscar" });
+    }
+
+  }
+  res.status(400).json({ msg: "No me enviaste in id 😐" });
+};
 
 export const postIngredient = async (req: Request, res: Response) => {
   const { name, desc, unit, stock, stockFlag } = req.body as IIngredient;
