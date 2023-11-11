@@ -3,17 +3,19 @@ import { optionalToUpdate, regexSearch } from "../libs/fn.ratapan";
 import { IFood, Food } from "../models/food";
 import { uploadImageToS3 } from "../config/R2.config";
 import { Recipe } from "../models/recipe";
+import { io } from "../app";
 
 export const getFood = async (req: Request, res: Response) => {
   try {
-    if (req.query?.id){
-      const food = await Food.findById(req.query?.id) as IFood
-      if(food) {
-        const recipe = await Recipe.find({food:food.id})
-        .populate('ingredient').populate('process')
-        return res.status(200).json({food,recipe});
+    if (req.query?.id) {
+      const food = (await Food.findById(req.query?.id)) as IFood;
+      if (food) {
+        const recipe = await Recipe.find({ food: food.id })
+          .populate("ingredient")
+          .populate("process");
+        return res.status(200).json({ food, recipe });
       }
-      return res.status(400).json({msg:'ha ocurrido un error'})
+      return res.status(400).json({ msg: "ha ocurrido un error" });
     }
     const data = await Food.find();
     res.json(data);
@@ -22,7 +24,7 @@ export const getFood = async (req: Request, res: Response) => {
   }
 };
 
-export const getFoodPagination = async (req: Request, res: Response)=>{
+export const getFoodPagination = async (req: Request, res: Response) => {
   if (!req.query?.page)
     return res.status(400).json({ msg: 'Se necesita el parametro "page"' });
   const page = req.query.page as string;
@@ -55,9 +57,7 @@ export const getFoodPagination = async (req: Request, res: Response)=>{
         currentPage: pageInt,
         total: dataCount,
       });
-    return res
-      .status(400)
-      .json({ msg: "El comida con este nombre no existe" });
+    return res.status(400).json({ msg: "El comida con este nombre no existe" });
   }
 
   const data = await Food.find()
@@ -73,30 +73,29 @@ export const getFoodPagination = async (req: Request, res: Response)=>{
     currentPage: pageInt,
     total: dataCount,
   });
-}
+};
 
 export const postFood = async (req: Request, res: Response) => {
-  const { name, nameFile, desc, price, type } = req.body as IFood;
+  const { name, desc, price, type } = req.body as IFood;
   const img = req.file?.buffer;
 
-  if (!name || !desc || !img|| !price|| !type || !nameFile)
+  if (!name || !desc || !img || !price || !type)
     return res.status(400).json({
-      msg: "Datos incompletos (name, nameFile, desc, img, price, type)",
-  });
+      msg: "Datos incompletos (name, desc, img, price, type)",
+    });
 
- const priceToInt = parseInt(`${price}`, 10);
- if (isNaN(priceToInt) || priceToInt < 1) {
-  res.status(400).json({ msg: "Precio no es un numero valido" });
-  return;
-}
+  const priceToInt = parseInt(`${price}`, 10);
+  if (isNaN(priceToInt) || priceToInt < 1) {
+    res.status(400).json({ msg: "Precio no es un numero valido" });
+    return;
+  }
 
   const toUpdate = {
     name: name,
     desc: desc,
-    //img:respS3.url, 
-    img:'http://placekitten.com/200/300', 
-    price:priceToInt, 
-    type:type
+    img: "http://placekitten.com/200/300",
+    price: priceToInt,
+    type: type,
   };
   const options = optionalToUpdate(toUpdate);
 
@@ -109,15 +108,17 @@ export const postFood = async (req: Request, res: Response) => {
   try {
     await data.save();
 
-    const respS3 = await uploadImageToS3(img,'foods',`${data._id}`)
+    const respS3 = await uploadImageToS3(img, "foods", `${data._id}.webp`);
 
-  if (respS3.url === null)
-    return res.status(400).json({msg: "Hubo un problema con la imagen, ve que sea un png",});
-    
+    if (respS3.url === null)
+      return res
+        .status(400)
+        .json({ msg: "Hubo un problema con la imagen, ve que sea un png" });
+
     data.img = respS3.url;
 
     await data.save();
-
+    io.emit('food:save',data)
     return res.status(201).json(data);
   } catch (_) {
     return res.status(400).json({ msg: "Error de registro" });
@@ -125,29 +126,35 @@ export const postFood = async (req: Request, res: Response) => {
 };
 
 export const putFood = async (req: Request, res: Response) => {
-  const { id, name, desc, img, price, type } = req.body as IFood;
-
+  const { id, name, desc, price, type } = req.body as IFood;
+  const imgFile = req.file?.buffer;
   if (!id) return res.status(400).json({ msg: "Se requiere id" });
 
   const toUpdate = {
     name: name,
     desc: desc,
-    img:img, 
-    price:price, 
-    type:type
+    price: price,
+    type: type,
   };
 
   const options = optionalToUpdate(toUpdate);
 
-  if (Object.keys(options).length == 0)
-    return res.status(400).json({ msg: "Datos erroneos (name desc img price type)" });
-
   try {
-    const data = await Food.findByIdAndUpdate(id, options, {
-      new: true,
-    });
+    let food = await Food.findById(id);
+
+    if (!food) return res.status(404).json({ msg: "Comida no encontrada" });
+
+    if (imgFile) {
+      const respS3 = await uploadImageToS3(imgFile, "foods", `${id}.webp`);
+      options.img = respS3.url;
+    }
+    console.log(options);
+    
+    // Actualizar documento
+    const data = await Food.findByIdAndUpdate(id, options, { new: true });
+io.emit('food:save',data)
     return res.status(200).json(data);
-  } catch (_) {
-    return res.status(400).json({ msg: "Error de registro" });
+  } catch (error) {
+    return res.status(500).json({ msg: "Error del servidor" });
   }
 };
