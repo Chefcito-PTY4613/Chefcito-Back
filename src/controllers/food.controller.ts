@@ -127,7 +127,7 @@ export const postFood = async (req: Request, res: Response) => {
 
 export const putFood = async (req: Request, res: Response) => {
   const { id, name, desc, price, type } = req.body as IFood;
-  const imgFile = req.file?.buffer;
+  const imgFile =  req.file?.buffer;
   if (!id) return res.status(400).json({ msg: "Se requiere id" });
 
   const toUpdate = {
@@ -146,6 +146,7 @@ export const putFood = async (req: Request, res: Response) => {
 
     if (imgFile) {
       const respS3 = await uploadImageToS3(imgFile, "foods", `${id}.webp`);
+      if(!respS3.url)
       options.img = respS3.url;
     }
     console.log(options);

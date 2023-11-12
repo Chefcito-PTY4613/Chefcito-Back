@@ -41,8 +41,7 @@ export const paySale = async (req: Request, res: Response) => {
       
       await Reservation.findByIdAndUpdate(reservationData.id,{
         active:false
-        
-      })
+      }, { new: true })
       const table = await Table.findByIdAndUpdate(
         reservationData.table,
         { active: true },
@@ -96,7 +95,7 @@ export const paySaleForced = async (req: Request, res: Response) => {
     await Reservation.findByIdAndUpdate(reservationData.id,{
       active:false
 
-    })
+    }, { new: true })
     const table = await Table.findByIdAndUpdate(
       reservationData.table,
       { active: true },
@@ -116,3 +115,38 @@ export const paySaleForced = async (req: Request, res: Response) => {
     return res.status(400).json({msg:'Error de busqueda'})
   }
 }
+
+const terminator = async()=>{
+  const saleStatusData = await SaleStatus.findOne({name:'Pagada'}) as ISaleStatus;
+  
+  const sales = await Sale.find({status:{ $ne: saleStatusData.id }}) as Array<ISale>;
+  const reservations = await Reservation.find({active:true}) as Array<IReservation>;
+
+  sales.forEach(async ( {id} )=>  {
+    await Sale.findByIdAndUpdate(id,{status:saleStatusData.id,})
+    console.log('Sale:',id)
+  })
+  reservations.forEach( async ({id})=>{ 
+    await Reservation.findByIdAndUpdate(id,{active:false  }, { new: true })
+    console.log('Reservation:',id)
+  })
+}
+//terminator()
+
+//{
+//  "reservation": {
+//    "table": "64f8ea7e5f0db14541aa7f75",
+//    "user": "651db8bd309027b12f40381d",
+//    "active": true,
+//    "_id": "655114e5edc32eb6024bc6e8",
+//    "createdAt": "2023-11-12T18:09:41.859Z",
+//    "updatedAt": "2023-11-12T18:09:41.859Z"
+//  },
+//  "sale": {
+//    "_id": "655114e6edc32eb6024bc6ec",
+//    "reservation": "655114e5edc32eb6024bc6e8",
+//    "status": "64f8ea7e5f0db14541aa7f69",
+//    "createdAt": "2023-11-12T18:09:42.519Z",
+//    "updatedAt": "2023-11-12T18:09:42.519Z"
+//  }
+//}

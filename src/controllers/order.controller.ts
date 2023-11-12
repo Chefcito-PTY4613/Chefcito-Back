@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { Order, IOrder } from "../models/order";
 import { optionalToUpdate } from "../libs/fn.ratapan";
 import { Food, IFood } from "../models/food";
-import { io } from "../app";
 
 export const getOrder = async (req: Request, res: Response) => {
   if (req.query?.id) {
@@ -14,6 +13,7 @@ export const getOrder = async (req: Request, res: Response) => {
       return res.status(400).json({ msg: "La venta no existe" });
     }
   }
+
   const data = await Order.find();
   if (data) return res.status(200).json(data);
   return res.status(400).json({ msg: "Ha ocurrido un error" });
@@ -24,6 +24,7 @@ export const getOrderBySale = async (req: Request, res: Response) => {
       const data = await Order.find({ sale: req.query?.id }).populate("food");
       if (data) return res.status(200).json(data);
       return res.status(400).json({ msg: "Ha ocurrido un error" });
+     
     } catch (error) {
       return res.status(400).json({ msg: "La venta no existe" });
     }

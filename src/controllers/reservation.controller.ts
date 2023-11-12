@@ -12,8 +12,14 @@ export const getReservationManagement = async (req: Request, res: Response) => {
   try{
   const { table } = req.body as IReservation;
 
-  const reservation = (await Reservation.findOne({ table })) as IReservation;
+  const reservation = (await Reservation.findOne({ table,  active : true })) as IReservation;
 
+  console.log("🚀 ~ file: reservation:", reservation)
+
+  if(reservation == null){
+    return res.status(200).json({ msg: "La mesa no tiene recervas activas" });
+  }
+  
   const sale = (await Sale.findOne({ reservation: reservation.id })) as ISale;
 
   const orders = await Order.find({ sale: sale.id })
@@ -23,7 +29,7 @@ export const getReservationManagement = async (req: Request, res: Response) => {
   return res.json({ reservation, sale, orders });
 
   } catch (error) {
-    res.status(400).json({ msg: "Ha ocurrido un erro" });
+    res.status(400).json({ msg: "Ha ocurrido un error" });
   }
 };
 

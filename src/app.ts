@@ -17,8 +17,11 @@ import userRouter from "./routes/user.routes";
 import ingredientRouter from "./routes/ingredient.router";
 import foodRouter from "./routes/food.router";
 import orderRouter from "./routes/order.router";
-import { subscriptions } from "./subscriptions/subscriptions";
 import saleRouter from "./routes/sale.router";
+import recipeRouter from "./routes/recipe.routes";
+
+//socket
+import { subscriptions } from "./subscriptions/subscriptions";
 
 //init
 const app = express();
@@ -65,6 +68,7 @@ app.use(reservationRouter);
 app.use(foodRouter);
 app.use(orderRouter);
 app.use(saleRouter);
+app.use(recipeRouter);
 app.use("/type", typeRouter);
 
 const allRoutes = expressListEndpoints(app);
