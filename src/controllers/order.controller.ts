@@ -20,9 +20,9 @@ export const getOrder = async (req: Request, res: Response) => {
 };
 
 export const getOrderBySale = async (req: Request, res: Response) => {
-  if (req.query?.id) {
+  if (req.params?.id) {
     try {
-      const data = await Order.find({ sale: req.query?.id }).populate("food");
+      const data = await Order.find({ sale: req.params?.id }).populate("food");
       if (data) return res.status(200).json(data);
       return res.status(400).json({ msg: "Ha ocurrido un error" });
      

@@ -29,7 +29,9 @@ orderRouter.get(
   getOrder
 );
 
-orderRouter.get("/orderBySale", getOrderBySale);
+orderRouter.get("/order/sale/:id",
+passport.authenticate("jwt", { session: false }), 
+getOrderBySale);
 
 orderRouter.post(
   "/order",

@@ -65,7 +65,6 @@ OrderSchema.post<IOrder>("save", async function (doc: IOrder,next) {
   ))
 
   for (const movement of movements) {
-    console.log('---------------------------')
     await new Movement(movement).save();
   }
 
