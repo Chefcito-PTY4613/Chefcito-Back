@@ -18,6 +18,7 @@ export const getOrder = async (req: Request, res: Response) => {
   if (data) return res.status(200).json(data);
   return res.status(400).json({ msg: "Ha ocurrido un error" });
 };
+
 export const getOrderBySale = async (req: Request, res: Response) => {
   if (req.query?.id) {
     try {
@@ -34,6 +35,21 @@ export const getOrderBySale = async (req: Request, res: Response) => {
 export const getOrderManagement = async (req: Request, res: Response) => {
   return res.json(await Order.find());
 };
+
+export const getOrderById = async (req: Request, res: Response) => {
+  if (req.params?.id) {
+    try {
+      const data = await Order.findById(req.params.id).populate("food");
+      if (data) return res.status(200).json(data);
+      return res.status(400).json({ msg: "Ha ocurrido un error" });
+     
+    } catch (error) {
+      return res.status(400).json({ msg: "La venta no existe" });
+    }
+  }
+  return res.status(400).json({ msg: "La se requiere el id" });
+};
+
 export const createOrder = async (req: Request, res: Response) => {
   const { food, sale, desc, status } = req.body as IOrder;
 
