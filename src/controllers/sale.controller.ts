@@ -10,10 +10,16 @@ import { io } from "../app";
 
 
 export const paySale = async (req: Request, res: Response) => {
+  const { tip } = req.body;
+  const pageInt = parseInt(tip, 10);
+  let propina=0
+  if (!isNaN(pageInt)) propina = pageInt
+
   let id:string
   if (req.params?.id){
     id = req.params.id;
   }else return res.status(400).json({msg:'Se necesita el ID de venta'})
+
   try {
     const saleData = await Sale.findById(id) as ISale
     if(!saleData?.id)return res.status(400).json({msg:'No existe una venta con este ID'})
@@ -49,7 +55,7 @@ export const paySale = async (req: Request, res: Response) => {
         );
         await Sale.findByIdAndUpdate(saleData.id,{
           status:saleStatusData.id,
-          total,
+          total:total + propina ,
           payTime: new Date()
         })
         
@@ -117,6 +123,7 @@ export const paySaleForced = async (req: Request, res: Response) => {
 }
 
 const terminator = async()=>{
+
   const saleStatusData = await SaleStatus.findOne({name:'Pagada'}) as ISaleStatus;
   
   const sales = await Sale.find({status:{ $ne: saleStatusData.id }}) as Array<ISale>;

@@ -8,6 +8,8 @@ import {
   optionalToUpdate,
   regexSearch,
 } from "../libs/fn.ratapan";
+import { sendMail } from "../config/mail.config";
+import { checkupMail } from "../libs/templates/checkUpMail";
 
 export const signup = async (req: Request, res: Response) => {
   const { mail, password, name, lastName } = req.body;
@@ -31,7 +33,29 @@ export const signup = async (req: Request, res: Response) => {
   });
   newCustomer.save();
 
+  //
+  const tokenVal = createToken({ id: newCustomer._id, validate: true }, 1);
+  const verif = checkupMail(`${name} ${lastName}`, tokenVal);
+  let info = await sendMail(mail, `Verificacion de correo Chefcito`, verif);
+
+  console.log(info);
+
   return res.status(201).json(newCustomer);
+};
+
+export const sendMailVerify = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { name, lastName, mail } = req.query as {name:string, lastName:string, mail:string}
+
+  if (!id || !mail || !name || !lastName) return res.status(400).json({ msg: "Datos incompletos" });
+
+  const tokenVal = createToken({ id, validate: true }, 1);
+  const verif = checkupMail(`${name} ${lastName}`, tokenVal);
+  let info = await sendMail(mail, `Verificacion de correo Chefcito`, verif);
+
+  console.log(info);
+
+  return res.status(201).json({ msg: "Correo enviado" });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -54,6 +78,25 @@ export const login = async (req: Request, res: Response) => {
   );
 
   return res.status(200).json({ token, user });
+};
+
+export const checkup = async (req: Request, res: Response) => {
+  try {
+    const decoded = verifiedToken(req.params.validate);
+
+    if (!decoded.token)
+      return res.status(400).json({ message: "Invalid token" });
+
+    let user = decoded.res as IUser;
+    const userFound = await User.findByIdAndUpdate(
+      user.id,
+      { verified: true },
+      { new: true }
+    );
+    res.status(200).json(userFound);
+  } catch {
+    return res.status(400).json({ message: "Invalid token" });
+  }
 };
 
 export const getCustomers = async (req: Request, res: Response) => {
@@ -90,7 +133,6 @@ export const getCustomers = async (req: Request, res: Response) => {
 
   const typesUser = await UserType.findOne({ name: "customer" });
 
-
   if (!typesUser)
     return res
       .status(400)
@@ -108,7 +150,7 @@ export const getCustomers = async (req: Request, res: Response) => {
       .sort({ createdAt: -1 });
 
     const customersCount = await User.countDocuments({
-      name:regexSearch(`${req.query.name}`),
+      name: regexSearch(`${req.query.name}`),
       userType: typesUser.id,
     });
 
@@ -182,16 +224,16 @@ export const getWorker = async (req: Request, res: Response) => {
   //byName
   if (req.query?.name) {
     const customers = await User.find({
-      name:regexSearch(`${req.query.name}`),
-      userType: {$ne:typesUser.id},
+      name: regexSearch(`${req.query.name}`),
+      userType: { $ne: typesUser.id },
     })
       .limit(limit)
       .skip((pageInt - 1) * limit)
       .sort({ createdAt: -1 });
 
     const customersCount = await User.countDocuments({
-      name:regexSearch(`${req.query.name}`),
-      userType: {$ne:typesUser.id},
+      name: regexSearch(`${req.query.name}`),
+      userType: { $ne: typesUser.id },
     });
 
     if (customers)
@@ -206,12 +248,14 @@ export const getWorker = async (req: Request, res: Response) => {
       .json({ msg: "El ususario con este nombre no existe" });
   }
 
-  const customers = await User.find({ userType: {$ne:typesUser.id} })
+  const customers = await User.find({ userType: { $ne: typesUser.id } })
     .limit(limit)
     .skip((pageInt - 1) * limit)
     .sort({ createdAt: -1 });
 
-  const customersCount = await User.countDocuments({ userType: {$ne:typesUser.id} });
+  const customersCount = await User.countDocuments({
+    userType: { $ne: typesUser.id },
+  });
 
   return res.status(200).json({
     data: customers,
@@ -226,9 +270,9 @@ export const postWorker = async (req: Request, res: Response) => {
     req.body as IUserWorker;
 
   // están los datos?
-  if (!mail || !password || !name || !lastName || !userType){
-
-    return res.status(400).json({ msg: "Datos incompletos" })}
+  if (!mail || !password || !name || !lastName || !userType) {
+    return res.status(400).json({ msg: "Datos incompletos" });
+  }
   // el usuario ya existe?
   const user = await User.findOne({ mail });
   if (user) return res.status(400).json({ msg: "El usuario ya existe" });
@@ -248,14 +292,15 @@ export const postWorker = async (req: Request, res: Response) => {
     lastName: lastName,
     userType: userType,
   };
-  let phoneObj:Record<string, unknown> = {}
-  if(phone !== undefined )if(phone?.number!== undefined && phone?.code!== undefined){
-    phoneObj['code'] = phone.code
-    phoneObj['number'] = phone?.number
-  }
+  let phoneObj: Record<string, unknown> = {};
+  if (phone !== undefined)
+    if (phone?.number !== undefined && phone?.code !== undefined) {
+      phoneObj["code"] = phone.code;
+      phoneObj["number"] = phone?.number;
+    }
   const options = optionalToUpdate(toCreate);
 
-  const newWorker = new User({...options,phone:{...phoneObj}});
+  const newWorker = new User({ ...options, phone: { ...phoneObj } });
   newWorker.save();
 
   return res.status(201).json(newWorker);

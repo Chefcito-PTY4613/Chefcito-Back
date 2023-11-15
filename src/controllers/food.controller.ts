@@ -29,6 +29,8 @@ export const getFoodPagination = async (req: Request, res: Response) => {
     return res.status(400).json({ msg: 'Se necesita el parametro "page"' });
   const page = req.query.page as string;
   const pageInt = parseInt(page, 10);
+  
+
   //page es un numero?
   if (isNaN(pageInt) || pageInt < 1) {
     res.status(400).json({ msg: "Page no es un numero valido" });
@@ -127,7 +129,7 @@ export const postFood = async (req: Request, res: Response) => {
 
 export const putFood = async (req: Request, res: Response) => {
   const { id, name, desc, price, type } = req.body as IFood;
-  const imgFile =  req.file?.buffer;
+  const img =  req.file?.buffer;
   if (!id) return res.status(400).json({ msg: "Se requiere id" });
 
   const toUpdate = {
@@ -144,14 +146,13 @@ export const putFood = async (req: Request, res: Response) => {
 
     if (!food) return res.status(404).json({ msg: "Comida no encontrada" });
 
-    if (imgFile) {
-      const respS3 = await uploadImageToS3(imgFile, "foods", `${id}.webp`);
-      if(!respS3.url)
+    if (img) {
+      const respS3 = await uploadImageToS3(img, "foods", `${id}.webp`);
+      console.log(respS3)
+      if(respS3.url)
       options.img = respS3.url;
     }
-    console.log(options);
-    
-    // Actualizar documento
+
     const data = await Food.findByIdAndUpdate(id, options, { new: true });
 io.emit('food:save',data)
     return res.status(200).json(data);

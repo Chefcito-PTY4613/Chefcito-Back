@@ -16,5 +16,18 @@ export const getRecipe= async (req: Request, res: Response) => {
 
   }
   res.status(400).json({ msg: "No me enviaste in id 😐" });
+};
+
+export const delRecipe = async (req: Request, res: Response) => {
+  if (req.params?.id){
+    try {
+      const data = await Recipe.findByIdAndDelete(req.params.id)
+      return res.status(204).json(data)
+    } catch (error) {
+      res.status(400).json({ msg: "Error al buscar" });
+    }
+
+  }
+  res.status(400).json({ msg: "No me enviaste in id 😐" });
 
 };

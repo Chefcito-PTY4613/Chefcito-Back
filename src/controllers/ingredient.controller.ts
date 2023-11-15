@@ -55,6 +55,40 @@ export const getIngredient = async (req: Request, res: Response) => {
     total: dataCount,
   });
 };
+
+export const getIngredientRecipe = async (req: Request, res: Response) => {
+
+
+  const limit: number = 5;
+
+  //byName
+  if (req.query?.name) {
+    const data = await Ingredient.find({
+      name: regexSearch(`${req.query.name}`),
+    })
+      .select("name unit")
+      .limit(limit)
+      .sort({ name: 1 })
+
+    if (data)
+      return res.status(200).json({
+        data
+      });
+    return res
+      .status(400)
+      .json({ msg: "El ingrediente con este nombre no existe" });
+  }
+
+  const data = await Ingredient.find()
+    .select("name unit")
+    .limit(limit)
+    .sort({ name: 1 });
+
+  return res.status(200).json({
+    data
+  });
+};
+
 export const getIngredientStock = async (req: Request, res: Response) => {
   if (req.params?.id){
     try {

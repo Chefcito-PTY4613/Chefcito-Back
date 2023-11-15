@@ -14,5 +14,10 @@ export default {
         URL:process.env.URL_CLOUD||'',
         URL_DEV:process.env.URL_DEV_CLOUD||'',
         BUCKET:process.env.BUCKET_CLOUD||'',
+    },
+    MAIL:{
+        CORREO:process.env.MAIL||'',
+        PASS:process.env.MAIL_PASS||'',
     }
+
 }
