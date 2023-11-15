@@ -33,12 +33,10 @@ export const signup = async (req: Request, res: Response) => {
   });
   newCustomer.save();
 
-  //
+  
   const tokenVal = createToken({ id: newCustomer._id, validate: true }, 1);
   const verif = checkupMail(`${name} ${lastName}`, tokenVal);
-  let info = await sendMail(mail, `Verificacion de correo Chefcito`, verif);
-
-  console.log(info);
+  await sendMail(mail, `Verificacion de correo Chefcito`, verif);
 
   return res.status(201).json(newCustomer);
 };
@@ -51,9 +49,8 @@ export const sendMailVerify = async (req: Request, res: Response) => {
 
   const tokenVal = createToken({ id, validate: true }, 1);
   const verif = checkupMail(`${name} ${lastName}`, tokenVal);
-  let info = await sendMail(mail, `Verificacion de correo Chefcito`, verif);
+  await sendMail(mail, `Verificacion de correo Chefcito`, verif);
 
-  console.log(info);
 
   return res.status(201).json({ msg: "Correo enviado" });
 };
