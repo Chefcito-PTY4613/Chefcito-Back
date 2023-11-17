@@ -5,6 +5,7 @@ import {
   createOrder,
   getOrderBySale,
   getOrderById,
+  updateStatusOrder,
 } from "../controllers/order.controller";
 import passport from "passport";
 import { isAdmin } from "../middlewares/isUserType";
@@ -39,7 +40,7 @@ orderRouter.post(
   createOrder
 );
 
-orderRouter.put("/order", [passport.authenticate("jwt", { session: false })]);
+orderRouter.put("/order/:id", [passport.authenticate("jwt", { session: false })],updateStatusOrder);
 
 orderRouter.delete("/order", [
   passport.authenticate("jwt", { session: false }),

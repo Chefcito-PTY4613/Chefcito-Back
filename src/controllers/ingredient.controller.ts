@@ -137,7 +137,6 @@ export const postIngredient = async (req: Request, res: Response) => {
 };
 
 export const putIngredient = async (req: Request, res: Response) => {
-  console.log(req.body)
   const { id, name, unit, desc, stock, stockFlag } = req.body as IIngredient;
 
   if (!id) return res.status(400).json({ msg: "Se requiere id" });

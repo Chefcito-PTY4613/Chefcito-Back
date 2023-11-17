@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { Order, IOrder } from "../models/order";
 import { optionalToUpdate } from "../libs/fn.ratapan";
 import { Food, IFood } from "../models/food";
+import { OrderStatus } from "../models/types/orderStatus";
+import { io } from "../app";
 
 export const getOrder = async (req: Request, res: Response) => {
   if (req.query?.id) {
@@ -32,6 +34,7 @@ export const getOrderBySale = async (req: Request, res: Response) => {
   }
   return res.status(400).json({ msg: "La venta no existe" });
 };
+
 export const getOrderManagement = async (req: Request, res: Response) => {
   return res.json(await Order.find());
 };
@@ -75,6 +78,42 @@ export const createOrder = async (req: Request, res: Response) => {
     await order.save();
 
     return res.status(201).json(order);
+  } catch (_) {
+    return res.status(400).json({ msg: "Error de registro" });
+  }
+};
+
+export const updateStatusOrder = async (req: Request, res: Response) => {
+
+  const { id } = req.params;
+  const { status } = req.body as IOrder;
+
+  if (!id)
+  return res
+    .status(400)
+    .json({ msg: "Se necesita id" });
+
+  if (!status)
+    return res
+      .status(400)
+      .json({ msg: "Datos incompletos (status)" });
+
+  // la comida existe?
+  const is = (await OrderStatus.findById(status)) as IFood;
+  if (!is.id) return res.status(400).json({ msg: "El estado no existe" });
+
+  try {
+    const order = await Order.findById(id) as IOrder;
+    if(!order)  return res
+    .status(400)
+    .json({ msg: "La orden no exite" });
+
+    const updatedOrder = await Order.findByIdAndUpdate(id,{status}, {new:true}).populate('status')
+
+    io.emit('updatedOrder', updatedOrder)
+
+    return res.status(201).json(updatedOrder);
+
   } catch (_) {
     return res.status(400).json({ msg: "Error de registro" });
   }
