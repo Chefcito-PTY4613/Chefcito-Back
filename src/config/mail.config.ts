@@ -1,28 +1,40 @@
 import { createTransport } from "nodemailer";
 import config from "./config";
 
-export const sendMail = async (mailUser: string, subject: string, html: string) => {
-  const configMail = {
-    host: "smtp.office365.com",
-    secure: false, // Cambiado a false para el puerto 587
-    port: 587,
-    auth: {
-      user: config.MAIL.CORREO,
-      pass: config.MAIL.PASS,
-    },
-  };
+const user =  config.MAIL.CORREO;
+const pass =  config.MAIL.PASS;
 
+const configMail = {
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user,
+    pass
+  }
+};
+
+const transport = createTransport(configMail);
+
+export const sendMail = async (mailUser: string, subject: string, html: string) => {
   const msg = {
-    from: config.MAIL.CORREO,
+    from: user,
     to: mailUser,
     subject: subject,
-    html: Buffer.from(html, "utf-8").toString(),
+    //html: html,
+    html: Buffer.from(html, "utf-8")//.toString(),
   };
 
   try {
-    const transport = createTransport(configMail);
-    const info = await transport.sendMail(msg);
-    return info;
+    transport.verify(async function(error, success) {
+      if (error) {
+        console.log(error);
+      } else {
+        const info = await transport.sendMail(msg);
+        console.log(info)
+      }
+    });
+
   } catch (error) {
     console.error('Error sending email:', error);
   }

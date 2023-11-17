@@ -51,7 +51,6 @@ export const sendMailVerify = async (req: Request, res: Response) => {
   const verif = checkupMail(`${name} ${lastName}`, tokenVal);
   await sendMail(mail, `Verificacion de correo Chefcito`, verif);
 
-
   return res.status(201).json({ msg: "Correo enviado" });
 };
 
