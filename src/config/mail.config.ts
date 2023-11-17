@@ -21,7 +21,6 @@ export const sendMail = async (mailUser: string, subject: string, html: string) 
     from: user,
     to: mailUser,
     subject: subject,
-    //html: html,
     html: Buffer.from(html, "utf-8")//.toString(),
   };
 
@@ -30,8 +29,7 @@ export const sendMail = async (mailUser: string, subject: string, html: string) 
       if (error) {
         console.log(error);
       } else {
-        const info = await transport.sendMail(msg);
-        console.log(info)
+        await transport.sendMail(msg);
       }
     });
 

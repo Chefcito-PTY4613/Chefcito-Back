@@ -7,6 +7,6 @@ const authRouter = Router();
 authRouter.post("/signup", signup);
 authRouter.post("/login", login);
 authRouter.get('/verify/:id', sendMailVerify);
-authRouter.get('/checkup/:validate', checkup);
+authRouter.get('/auth/checkup/:validate', checkup);
 
 export default authRouter;

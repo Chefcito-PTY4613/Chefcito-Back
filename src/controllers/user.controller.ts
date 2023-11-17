@@ -10,6 +10,7 @@ import {
 } from "../libs/fn.ratapan";
 import { sendMail } from "../config/mail.config";
 import { checkupMail } from "../libs/templates/checkUpMail";
+import checkUpResponse from "../libs/templates/checkUpResponse";
 
 export const signup = async (req: Request, res: Response) => {
   const { mail, password, name, lastName } = req.body;
@@ -80,20 +81,21 @@ export const checkup = async (req: Request, res: Response) => {
   try {
     const decoded = verifiedToken(req.params.validate);
 
-    if (!decoded.token)
-      return res.status(400).json({ message: "Invalid token" });
+    if (!decoded.token) {
+      
+      return res.status(400).send(checkUpResponse.badToken);
+    }
 
     let user = decoded.res as IUser;
-    const userFound = await User.findByIdAndUpdate(
-      user.id,
-      { verified: true },
-      { new: true }
-    );
-    res.status(200).json(userFound);
-  } catch {
-    return res.status(400).json({ message: "Invalid token" });
+    await User.findByIdAndUpdate(user.id, { verified: true }, { new: true });
+
+    res.status(200).send(checkUpResponse.good);
+  } catch (error) {
+    res.status(400).send(checkUpResponse.error);
   }
 };
+
+
 
 export const getCustomers = async (req: Request, res: Response) => {
   if (!req.query?.page)
