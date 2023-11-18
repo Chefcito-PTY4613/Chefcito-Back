@@ -179,7 +179,7 @@ const setFood = async () => {
       desc: "Occaecat officia aliquip consequat eiusmod elit commodo aliqua occaecat eiusmod aliquip nulla elit. Labore sit proident nisi officia eiusmod velit irure et tempor sunt.",
       img: "https://placebear.com/360/360",
       price: 1000,
-      type: breackfast?.id
+      type: breackfast?.id,
     },
     {
       name: "Pan con palta",
@@ -244,7 +244,7 @@ const setMovementType = async () => {
 
 const setProcess = async () => {
   const data = await ProcessType.find();
-  if (data.length >= 5) return;
+  if (data.length >= 7) return;
   const process: Array<IProcessType> = [
     {
       name: "Cafetera",
@@ -261,8 +261,22 @@ const setProcess = async () => {
     {
       name: "Quemadores",
     },
+    {
+      name: "Bar",
+    },
+    {
+      name: "Sin proceso",
+    },
   ];
-  ProcessType.insertMany(process);
+  process.forEach(async (element) => {
+    try {
+      const processT = new ProcessType(element);
+      await processT.save();
+      console.log('nombre: ',element.name)
+    } catch (_) {
+      console.log("_");
+    }
+  });
 };
 
 const setMeasurement = async () => {
@@ -307,6 +321,132 @@ const setIngredients = async () => {
   if (data.length >= 7) return;
 
   const ingredientList: Array<IIngredient> = [
+    {
+      name: "Lechuga",
+      desc: "Lechuga fresca para ensaladas y acompañamientos.",
+      unit: getUnit("gr"),
+      stock: mil(100),
+      stockFlag: mil(20),
+    },
+    {
+      name: "Queso mozzarella",
+      desc: "Queso mozzarella fresco, perfecto para pizzas y gratinados.",
+      unit: getUnit("gr"),
+      stock: mil(150),
+      stockFlag: mil(30),
+    },
+    {
+      name: "Carne de res",
+      desc: "Carne de res de primera calidad, versátil para una variedad de platos.",
+      unit: getUnit("gr"),
+      stock: mil(500),
+      stockFlag: mil(100),
+    },
+    {
+      name: "Pechuga de pollo",
+      desc: "Pechugas de pollo frescas, ideales para una variedad de recetas.",
+      unit: getUnit("gr"),
+      stock: mil(400),
+      stockFlag: mil(80),
+    },
+    {
+      name: "Zanahoria",
+      desc: "Zanahorias frescas, crujientes y dulces, perfectas para ensaladas y guarniciones.",
+      unit: getUnit("gr"),
+      stock: mil(150),
+      stockFlag: mil(25),
+    },
+    {
+      name: "Cebolla",
+      desc: "Cebollas, un básico en cualquier cocina para añadir sabor a cualquier plato.",
+      unit: getUnit("gr"),
+      stock: mil(200),
+      stockFlag: mil(40),
+    },
+    {
+      name: "Papas",
+      desc: "Papas frescas, ideales para freír, hervir o asar.",
+      unit: getUnit("gr"),
+      stock: mil(1000),
+      stockFlag: mil(200),
+    },
+    {
+      name: "Arroz",
+      desc: "Arroz de grano largo, perfecto para una variedad de platos.",
+      unit: getUnit("gr"),
+      stock: mil(500),
+      stockFlag: mil(100),
+    },
+    {
+      name: "Aceite de oliva",
+      desc: "Aceite de oliva extra virgen, ideal para cocinar y aderezar.",
+      unit: getUnit("ml"),
+      stock: mil(500),
+      stockFlag: mil(100),
+    },
+    {
+      name: "Vinagre",
+      desc: "Vinagre balsámico, perfecto para aderezos y marinados.",
+      unit: getUnit("ml"),
+      stock: mil(500),
+      stockFlag: mil(100),
+    },
+    {
+      name: "Tomate",
+      desc: "Tomates frescos y jugosos",
+      unit: getUnit("gr"),
+      stock: mil(200),
+      stockFlag: mil(30),
+    },
+    {
+      name: "Cebolla",
+      desc: "Cebollas blancas para sazonar",
+      unit: getUnit("gr"),
+      stock: mil(150),
+      stockFlag: mil(25),
+    },
+    {
+      name: "Leche",
+      desc: "Leche entera pasteurizada",
+      unit: getUnit("ml"),
+      stock: mil(500),
+      stockFlag: mil(100),
+    },
+    {
+      name: "Queso",
+      desc: "Queso mozzarella para gratinar",
+      unit: getUnit("gr"),
+      stock: mil(200),
+      stockFlag: mil(50),
+    },
+    {
+      name: "Pollo",
+      desc: "Pechugas de pollo frescas",
+      unit: getUnit("gr"),
+      stock: mil(500),
+      stockFlag: mil(100),
+    },
+    {
+      name: "Arroz",
+      desc: "Arroz blanco de grano largo",
+      unit: getUnit("gr"),
+      stock: mil(500),
+      stockFlag: mil(100),
+    },
+    {
+      name: "Limon",
+      desc: "Limones frescos para aderezar",
+      unit: getUnit("unidad"),
+      stock: 300,
+      stockFlag: 50,
+    },
+    {
+      name: "Ajo",
+      desc: "Dientes de ajo para condimentar",
+      unit: getUnit("gr"),
+      stock: mil(50),
+      stockFlag: mil(10),
+    },
     {
       name: "Sal",
       desc: "Sacos de sal",
@@ -356,9 +496,108 @@ const setIngredients = async () => {
       stock: mil(100),
       stockFlag: mil(25),
     },
+    {
+      name: "Pimienta negra",
+      desc: "Pimienta negra entera, ideal para moler fresca y añadir sabor a cualquier plato.",
+      unit: getUnit("gr"),
+      stock: mil(100),
+      stockFlag: mil(20),
+    },
+    {
+      name: "Comino",
+      desc: "Comino molido, perfecto para platillos con un toque latino o mediterráneo.",
+      unit: getUnit("gr"),
+      stock: mil(50),
+      stockFlag: mil(10),
+    },
+    {
+      name: "Paprika",
+      desc: "Paprika dulce, excelente para dar color y sabor suave a carnes y vegetales.",
+      unit: getUnit("gr"),
+      stock: mil(50),
+      stockFlag: mil(10),
+    },
+    {
+      name: "Canela en polvo",
+      desc: "Canela molida, ideal para postres y algunas preparaciones saladas.",
+      unit: getUnit("gr"),
+      stock: mil(50),
+      stockFlag: mil(10),
+    },
+    {
+      name: "Orégano seco",
+      desc: "Orégano seco, esencial para pizzas, pastas y platos mediterráneos.",
+      unit: getUnit("gr"),
+      stock: mil(50),
+      stockFlag: mil(10),
+    },
+    {
+      name: "Curry en polvo",
+      desc: "Mezcla de curry, perfecta para dar un toque exótico a tus platos.",
+      unit: getUnit("gr"),
+      stock: mil(50),
+      stockFlag: mil(10),
+    },
+    {
+      name: "Jugo de naranja natural",
+      desc: "Jugo de naranja recién exprimido, perfecto para un refrescante desayuno o merienda.",
+      unit: getUnit("ml"),
+      stock: mil(1000),
+      stockFlag: mil(200),
+    },
+    {
+      name: "Batido de frutas",
+      desc: "Mezcla de frutas de temporada para preparar deliciosos batidos.",
+      unit: getUnit("ml"),
+      stock: mil(1000),
+      stockFlag: mil(200),
+    },
+    {
+      name: "Limonada",
+      desc: "Concentrado de limonada casera para diluir, ideal para refrescarse en días calurosos.",
+      unit: getUnit("ml"),
+      stock: mil(500),
+      stockFlag: mil(100),
+    },
+    {
+      name: "Sprite",
+      desc: "Bebida azucarada.",
+      unit: getUnit("ml"),
+      stock: mil(500),
+      stockFlag: mil(100),
+    },
+    {
+      name: "Coca-cola",
+      desc: "Bebida azucarada.",
+      unit: getUnit("ml"),
+      stock: mil(500),
+      stockFlag: mil(100),
+    },
+    {
+      name: "Smoothie de frutos rojos",
+      desc: "Mezcla preparada para smoothies de frutos rojos, nutritiva y refrescante.",
+      unit: getUnit("ml"),
+      stock: mil(500),
+      stockFlag: mil(100),
+    },
+    {
+      name: "Frappé de café",
+      desc: "Base para frappé de café, ideal para una bebida helada energizante.",
+      unit: getUnit("ml"),
+      stock: mil(500),
+      stockFlag: mil(100),
+    },
   ];
 
-  Ingredient.insertMany(ingredientList);
+  ingredientList.forEach(async (element) => {
+    try {
+      const ingredient = new Ingredient(element);
+      await ingredient.save();
+      console.log('nombre: ',element.name)
+    } catch (_) {
+      console.log("_");
+    }
+  });
 };
 
 const setRecipe = async () => {
@@ -372,9 +611,12 @@ const setRecipe = async () => {
   const pan = (await Ingredient.findOne({ name: "Pan" })) as IIngredient;
   const huevo = (await Ingredient.findOne({ name: "huevo" })) as IIngredient;
   const aceite = (await Ingredient.findOne({ name: "Aceite" })) as IIngredient;
-
-  const plancha = (await ProcessType.findOne({name: "Plancha",})) as IProcessType;
-  const cafetera = (await ProcessType.findOne({name: "Cafetera",})) as IProcessType;
+  const plancha = (await ProcessType.findOne({
+    name: "Plancha",
+  })) as IProcessType;
+  const cafetera = (await ProcessType.findOne({
+    name: "Cafetera",
+  })) as IProcessType;
 
   const recipeList: Array<IRecipe> = [
     {
@@ -427,11 +669,10 @@ const setOrderStatus = async () => {
     },
     {
       name: "Cancelado",
-    }
+    },
   ];
   OrderStatus.insertMany(orderStatus);
 };
-
 
 export default [
   setUserTypes,

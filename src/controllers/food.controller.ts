@@ -4,6 +4,7 @@ import { IFood, Food } from "../models/food";
 import { uploadImageToS3 } from "../config/R2.config";
 import { Recipe } from "../models/recipe";
 import { io } from "../app";
+import { Ingredient } from "../models/igredient";
 
 export const getFood = async (req: Request, res: Response) => {
   try {
@@ -23,6 +24,24 @@ export const getFood = async (req: Request, res: Response) => {
     res.status(400).json({ msg: "Ha ocurrido un erro" });
   }
 };
+
+export const getFullData = async (req: Request, res: Response) => {
+    try {
+        const foods = await Food.find()
+            .populate('type')
+
+        const ingrdients = await Ingredient.find()
+            .populate('unit')
+
+        const recipes = await Recipe.find()
+            .populate("ingredient")
+            .populate("process");
+
+      res.status(200).json({foods, ingrdients, recipes});
+    } catch (error) {
+      res.status(400).json({ msg: "Ha ocurrido un erro" });
+    }
+}
 
 export const getFoodPagination = async (req: Request, res: Response) => {
   if (!req.query?.page)
@@ -46,7 +65,7 @@ export const getFoodPagination = async (req: Request, res: Response) => {
     })
       .limit(limit)
       .skip((pageInt - 1) * limit)
-      .sort({ createdAt: -1 });
+      .sort({ name: 1 });
 
     const dataCount = await Food.countDocuments({
       name: regexSearch(`${req.query.name}`),
@@ -65,7 +84,7 @@ export const getFoodPagination = async (req: Request, res: Response) => {
   const data = await Food.find()
     .limit(limit)
     .skip((pageInt - 1) * limit)
-    .sort({ createdAt: -1 });
+    .sort({ name: 1 });
 
   const dataCount = await Food.countDocuments();
 

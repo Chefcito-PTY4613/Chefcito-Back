@@ -23,7 +23,7 @@ export const getIngredient = async (req: Request, res: Response) => {
     })
       .limit(limit)
       .skip((pageInt - 1) * limit)
-      .sort({ createdAt: -1 });
+      .sort({ name: 1 });
 
     const dataCount = await Ingredient.countDocuments({
       name: regexSearch(`${req.query.name}`),
@@ -44,7 +44,7 @@ export const getIngredient = async (req: Request, res: Response) => {
   const data = await Ingredient.find()
     .limit(limit)
     .skip((pageInt - 1) * limit)
-    .sort({ createdAt: -1 });
+    .sort({ name: 1 });
 
   const dataCount = await Ingredient.countDocuments();
 
@@ -57,8 +57,6 @@ export const getIngredient = async (req: Request, res: Response) => {
 };
 
 export const getIngredientRecipe = async (req: Request, res: Response) => {
-
-
   const limit: number = 5;
 
   //byName

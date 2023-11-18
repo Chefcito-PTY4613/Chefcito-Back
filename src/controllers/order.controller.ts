@@ -54,6 +54,7 @@ export const getOrderById = async (req: Request, res: Response) => {
 };
 
 export const createOrder = async (req: Request, res: Response) => {
+
   const { food, sale, desc, status } = req.body as IOrder;
 
   if (!food || !sale || !status)

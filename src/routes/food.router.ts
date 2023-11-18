@@ -3,6 +3,7 @@ import passport from "passport";
 import {
   getFood,
   getFoodPagination,
+  getFullData,
   postFood,
   putFood,
 } from "../controllers/food.controller";
@@ -12,6 +13,10 @@ import { uploadFile } from "../middlewares/multer";
 const foodRouter = Router();
 
 foodRouter.get("/food", getFood);
+// foodRouter.get("/food/full", getFullData); //SoloTest
+
+
+
 foodRouter.get(
   "/food/pagination",
   passport.authenticate("jwt", { session: false }),
