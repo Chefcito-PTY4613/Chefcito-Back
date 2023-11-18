@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import http from "http";
+import path from 'path';
 import { Server } from "socket.io";
 
 import expressListEndpoints, { Endpoint } from "express-list-endpoints";
@@ -72,7 +73,7 @@ app.use(recipeRouter);
 app.use("/type", typeRouter);
 
 const allRoutes = expressListEndpoints(app);
-
+app.use('/docs', express.static(path.join(__dirname, 'MongoDocs')));
 app.get("/", (req, res) => {
   function compareByName(a: Endpoint, b: Endpoint) {
     return a.path.localeCompare(b.path);
