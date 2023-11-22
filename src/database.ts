@@ -11,9 +11,8 @@ const connection = mongoose.connection;
 
 connection.once('open', () => {
     console.log('MongoDB Conected');
-    // Configura mongoose-docs aquí
     const docsJSON = mongooseDocsJSON(connection);
-    mongooseDocsOutputHTML(docsJSON, __dirname + "/MongoDocs");
+    mongooseDocsOutputHTML(docsJSON, __dirname + "\\MongoDocs");
    
 });
 

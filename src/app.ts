@@ -5,7 +5,6 @@ import http from "http";
 import path from 'path';
 import { Server } from "socket.io";
 
-import expressListEndpoints, { Endpoint } from "express-list-endpoints";
 
 import passport from "passport";
 import passMiddleware from "./middlewares/passport";
@@ -20,6 +19,8 @@ import foodRouter from "./routes/food.router";
 import orderRouter from "./routes/order.router";
 import saleRouter from "./routes/sale.router";
 import recipeRouter from "./routes/recipe.routes";
+import cardRouter from "./routes/card.routes";
+import mainRouter from "./routes/main";
 
 //socket
 import { subscriptions } from "./subscriptions/subscriptions";
@@ -70,43 +71,11 @@ app.use(foodRouter);
 app.use(orderRouter);
 app.use(saleRouter);
 app.use(recipeRouter);
-app.use("/type", typeRouter);
+app.use(cardRouter);
 
-const allRoutes = expressListEndpoints(app);
+app.use('/type', typeRouter);
 app.use('/docs', express.static(path.join(__dirname, 'MongoDocs')));
-app.get("/", (req, res) => {
-  function compareByName(a: Endpoint, b: Endpoint) {
-    return a.path.localeCompare(b.path);
-  }
-  const lines = allRoutes.sort(compareByName).map(
-    (route) => `
-  Paths: </br>
-  <a href="https://chefcito-back-production.up.railway.app${
-    route.path
-  }" target="_blank"> https://chefcito-back-production.up.railway.app${
-      route.path
-    }</a> 
-  </br>
-  <a href="http://localhost:4000${
-    route.path
-  }" target="_blank"> http://localhost:4000${route.path}</a> 
-  <br/>
-  <br/>
-  Methods:</br> ${route.methods.join(", ")}
-  <br/>
-  <br/>
-  Middlewares:</br> 
-  ${route.middlewares}
-  </br> 
-  `
-  );
-  res.send(`
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-    *{
-      font-family: Roboto
-    }
 
-  </style> ${lines.join("<hr/>")}`);
-});
+app.use(mainRouter)
+
 export {app,io}
