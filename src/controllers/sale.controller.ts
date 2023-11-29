@@ -106,13 +106,13 @@ export const paySale = async (req: Request, res: Response) => {
     sendMail(
       user.mail,
       "Confirmación de Pago",
-      comfirmPay(
-        Object.values(resultForMail),
-        500,
-        3300,
-        Date().toString(),
-        "javier"
-      )
+      comfirmPay({
+        details: Object.values(resultForMail),
+        name: user.name,
+        endTime: Date().toString(),
+        propina: tip,
+        total,
+      })
     );
 
     return res.status(200).json({ msg: resp });

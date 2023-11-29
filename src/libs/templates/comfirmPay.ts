@@ -1,11 +1,11 @@
 import { transforDateTime,transforDate } from "../fn.ratapan";
 
-export const comfirmPay = (
+export const comfirmPay = ({details, propina, total, endTime, name}:{
   details:{name:string,cantidad:number,monto:number}[],
-  propina:number,
-  total:number,
-  endTime:string,
-  name:string)=> `<!DOCTYPE html>
+   propina:number,
+   total:number,
+   endTime:string,
+   name:string})=> `<!DOCTYPE html>
 <html>
 <head> <style> .email-container { max-width: 600px; margin: 0 auto; padding: 20px; text-align: center; border: 1px solid #ddd; border-radius: 12px; font-family: Arial, sans-serif;} .header { font-size: 24px; margin-bottom: 20px; } .content { text-align: left; margin-bottom: 20px; } .footer { font-size: 14px; color: #555; } .button { display: inline-block; margin-top: 20px; padding: 10px 20px; color: #fff; background-color: #008baa; border-radius: 5px; text-decoration: none;} 
 </style>
@@ -19,8 +19,10 @@ export const comfirmPay = (
             <h3>Resumen de pedido</h3>
             <ul>
             ${
-              details.map((detail) => `<li>${detail.name}${detail.cantidad>1?`(${detail.cantidad})`:''}: $${detail.monto}</li>`).join(' ')
-            }
+              details.map((detail) => `<li>${
+                detail.name}${
+                detail.cantidad>0?`(${detail.cantidad})`:''
+              }: $${detail.monto}</li>`).join(' ')}
               <li>Propina: $${propina}</li>
           </ul>
           <h3>Monto final</h3>
