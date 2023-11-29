@@ -16,12 +16,12 @@ foodRouter.get("/food", getFood);
 // foodRouter.get("/food/full", getFullData); //SoloTest
 
 
-
 foodRouter.get(
   "/food/pagination",
   passport.authenticate("jwt", { session: false }),
   getFoodPagination
 );
+
 foodRouter.post(
   "/food",
   [
@@ -40,5 +40,4 @@ foodRouter.put(
   ],
   putFood
 );
-
 export default foodRouter;

@@ -43,6 +43,7 @@ export const getFullData = async (req: Request, res: Response) => {
     }
 }
 
+
 export const getFoodPagination = async (req: Request, res: Response) => {
   if (!req.query?.page)
     return res.status(400).json({ msg: 'Se necesita el parametro "page"' });

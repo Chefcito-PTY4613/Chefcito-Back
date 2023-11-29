@@ -63,3 +63,9 @@ export const findById = async <T extends Document>(
     return null;
   }
 };
+
+export const transforDateTime = (date: string) =>
+  `${new Date(date).getHours()}:${new Date(date).getMinutes()}`;
+export const transforDate = (date: string) =>
+  `${new Date(date).getDate()}/${new Date(date).getMonth() + 1}`;
+  
