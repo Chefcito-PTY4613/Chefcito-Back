@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Sale, ISale } from "../models/sale";
 import { Table } from "../models/table";
-import { IOrderFood, Order } from "../models/order";
+import { IOrder, IOrderFood, Order } from "../models/order";
 import { IOrderStatus, OrderStatus } from "../models/types/orderStatus";
 import { IReservation, Reservation } from "../models/reservation";
 
@@ -10,6 +10,7 @@ import { io } from "../app";
 import { comfirmPay } from "../libs/templates/comfirmPay";
 import { sendMail } from "../config/mail.config";
 import { IUser } from "../models/user";
+import orderRouter from "../routes/order.router";
 
 export const paySale = async (req: Request, res: Response) => {
   const { tip } = req.body;
@@ -53,7 +54,6 @@ export const paySale = async (req: Request, res: Response) => {
 
     ordersData.forEach(async (order) => {
       total += order.food?.price ?? 0;
-
       await Order.findByIdAndUpdate(
         order._id,
         { status: orderStatusData.id },
@@ -206,4 +206,13 @@ const terminator = async () => {
     await Reservation.findByIdAndUpdate(id, { active: false }, { new: true });
     console.log("Reservation:", id);
   });
+};
+
+const terminatorOrders = async () => {
+  const orderData = (await Order.find({status:{ $ne: '651b2fdccdeb9672527e1d70'}})) as IOrder[];
+  
+  orderData.forEach( async ({_id})=>{
+    await Order.findByIdAndUpdate(_id, { status: '651b2fdccdeb9672527e1d70' }, { new: true });
+    console.log(_id)
+    })
 };

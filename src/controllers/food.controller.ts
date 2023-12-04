@@ -43,14 +43,12 @@ export const getFullData = async (req: Request, res: Response) => {
     }
 }
 
-
 export const getFoodPagination = async (req: Request, res: Response) => {
   if (!req.query?.page)
     return res.status(400).json({ msg: 'Se necesita el parametro "page"' });
   const page = req.query.page as string;
   const pageInt = parseInt(page, 10);
   
-
   //page es un numero?
   if (isNaN(pageInt) || pageInt < 1) {
     res.status(400).json({ msg: "Page no es un numero valido" });
