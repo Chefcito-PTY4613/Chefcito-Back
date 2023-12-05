@@ -170,7 +170,7 @@ export const createOrder = async (req: Request, res: Response) => {
   try {
     const order: IOrder = new Order(options);
     await order.save();
-
+    io.emit("updatedOrder", order);
     return res.status(201).json(order);
   } catch (_) {
     return res.status(400).json({ msg: "Error de registro" });
